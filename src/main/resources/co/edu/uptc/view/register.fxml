@@ -65,7 +65,7 @@
                         <Label styleClass="label-subtitle" stylesheets="@../css/register.css" text="Nombre de la ciudad donde naciste:" />
                         <TextField fx:id="emailField1" maxWidth="360.0" promptText="Respuesta" styleClass="text-input-field" />
                         
-                        <Button maxWidth="360.0" mnemonicParsing="false" styleClass="btn-primary" text="CREAR CUENTA" />
+                        <Button maxWidth="360.0" mnemonicParsing="false" onAction="#handleRegister" styleClass="btn-primary" text="CREAR CUENTA" />
                      </children>
                   </VBox>
                </children>
@@ -73,25 +73,25 @@
 
             <VBox alignment="CENTER_RIGHT" maxWidth="320.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="true">
+                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="false" managed="false">
+   <children>
+      <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/warningIcon.png" />
+         </image>
+      </ImageView>
+      
+      <Label fx:id="warningMessage" styleClass="warning-message" text="Campos obligatorios" wrapText="true" />
+   </children>
+</VBox>
+                  <VBox fx:id="warningBox1" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="false" managed="false">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/warningIcon.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="warning-message" text="El correo ingresado ya existe" />
-                        <Hyperlink styleClass="btn-link" text="IR A INICIO DE SESIÓN" />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="warningBox1" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="true">
-                     <children>
-                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/warningIcon.png" />
-                           </image>
-                        </ImageView>
-                        <Label styleClass="warning-message" text="Por favor, contesta los campos para continuar." />
+                        <Label styleClass="warningMessage" text="Por favor, contesta los campos para continuar." />
                      </children>
                   </VBox>
                </children>
