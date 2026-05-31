@@ -27,7 +27,7 @@ import co.edu.uptc.model.User;
 import co.edu.uptc.service.UserService;
 
 public class LoginController implements Initializable {
-    UserService userService=new UserService();
+    UserService userService = new UserService();
 
     @FXML
     private ComboBox<String> idiomaComboBox;
@@ -188,7 +188,7 @@ public class LoginController implements Initializable {
 
             // Redirigir a la vista principal de tu sistema (ajusta "dashboard" o "main" al
             // nombre de tu fxml)
-            App.setRoot("dashboard"); //OJO CAMBIAR AQUÍ PARA PROCEDER AL DASHBOARD
+            App.setRoot("dashboard"); // OJO CAMBIAR AQUÍ PARA PROCEDER AL DASHBOARD
         } else {
             // --- ❌ CREDENCIALES INCORRECTAS ---
             mostrarAlerta("Correo electrónico o contraseña incorrectos.");
@@ -211,7 +211,8 @@ public class LoginController implements Initializable {
             return;
         }
 
-        // Buscamos el Label interno de tu VBox de manera dinámica para cambiarle el texto
+        // Buscamos el Label interno de tu VBox de manera dinámica para cambiarle el
+        // texto
         Label lblMensaje = (Label) warningBox.getChildren().stream()
                 .filter(node -> node instanceof Label)
                 .findFirst()
@@ -235,7 +236,16 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void handleHyperLinkOlvidastePassword()throws IOException{
+    private void handleHyperLinkOlvidastePassword() throws IOException {
         App.setRoot("restore_password");
+    }
+
+    @FXML
+    private void handleExit() {
+        // Cerramos el programa de forma limpia liberando los recursos de JavaFX
+        javafx.application.Platform.exit();
+
+        // Forzamos la finalización del proceso por si queda algún hilo en segundo plano
+        System.exit(0);
     }
 }

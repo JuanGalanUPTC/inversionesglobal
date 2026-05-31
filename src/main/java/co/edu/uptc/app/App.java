@@ -13,6 +13,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    public static String emailARestablecer;
 
     @Override
     public void start(Stage stage) throws IOException {
