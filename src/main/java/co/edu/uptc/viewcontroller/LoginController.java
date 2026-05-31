@@ -2,7 +2,10 @@ package co.edu.uptc.viewcontroller;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
@@ -14,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 
@@ -182,13 +186,24 @@ public class LoginController implements Initializable {
             // --- 🔑 LOGIN EXITOSO ---
             User user = usuarioAutenticado.get();
             System.out.println("✅ ¡Bienvenido! Sesión iniciada para: " + user.getEmail());
+try {
+                // 1. Cargamos el FXML del Dashboard
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/dashboard.fxml"));
+                Parent dashboardRoot = loader.load();
 
-            // Guardar sesión o ID de manera global si lo requieres (ej.
-            // App.setUsuarioLogueado(user))
+                // 2. Obtenemos de forma segura la ventana actual usando el emailField
+                Stage stage = (Stage) emailField.getScene().getWindow();
 
-            // Redirigir a la vista principal de tu sistema (ajusta "dashboard" o "main" al
-            // nombre de tu fxml)
-            App.setRoot("dashboard"); //OJO CAMBIAR AQUÍ PARA PROCEDER AL DASHBOARD
+                // 3. Le montamos una escena fresca para romper la incoherencia visual
+                Scene nuevaEscena = new Scene(dashboardRoot);
+                stage.setScene(nuevaEscena);
+                stage.centerOnScreen();
+                stage.show();
+
+            } catch (IOException e) {
+                System.err.println("Error al cargar el dashboard: " + e.getMessage());
+                e.printStackTrace();
+            } //OJO CAMBIAR AQUÍ PARA PROCEDER AL DASHBOARD
         } else {
             // --- ❌ CREDENCIALES INCORRECTAS ---
             mostrarAlerta("Correo electrónico o contraseña incorrectos.");
