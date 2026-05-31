@@ -2,6 +2,7 @@ co\edu\uptc\model\Investor.class
 co\edu\uptc\service\InvestmentService$1.class
 co\edu\uptc\service\InvestorService.class
 co\edu\uptc\service\InvestorService$1.class
+co\edu\uptc\viewcontroller\DashboardController.class
 co\edu\uptc\persistence\JsonRepository.class
 co\edu\uptc\viewcontroller\RegisterController.class
 co\edu\uptc\util\AppConfig.class
@@ -17,6 +18,7 @@ co\edu\uptc\exception\InvestorNotFoundException.class
 co\edu\uptc\util\AppConfig$CurrencyMode.class
 co\edu\uptc\viewcontroller\SecondaryController.class
 co\edu\uptc\model\User.class
+co\edu\uptc\viewcontroller\MisInversionesController.class
 co\edu\uptc\model\enums\AssetType.class
 co\edu\uptc\exception\AssetNotFoundException.class
 co\edu\uptc\model\Investment.class
