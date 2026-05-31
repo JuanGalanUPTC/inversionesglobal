@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,86 +14,87 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.LoginController">
+<StackPane styleClass="root-container" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.LoginController">
    <children>
-      <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true">
-         <image>
-            <Image url="@../images/loginbackground.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="450.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
-         <image>
-            <Image url="@../images/idonfilingenimore.png" />
-         </image>
-         <StackPane.margin>
-            <Insets top="20.0" />
-         </StackPane.margin>
-      </ImageView>
-      <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" maxHeight="100.0" maxWidth="400.0" promptText="Cambiar idioma" styleClass="combo-idioma" stylesheets="@../css/login.css" visibleRowCount="2" StackPane.alignment="BOTTOM_LEFT">
-         <StackPane.margin>
-            <Insets bottom="30.0" left="50.0" />
-         </StackPane.margin>
-      </ComboBox>
-      <VBox alignment="CENTER" styleClass="login-box" stylesheets="@../css/login.css" StackPane.alignment="CENTER">
+      <HBox alignment="CENTER" spacing="20.0">
          <children>
-            <Label styleClass="label-title" text="INICIO DE SESIÓN" />
-            <TextField promptText="Correo electrónico" styleClass="text-input-field" />
-            <TextField promptText="Contraseña" styleClass="text-input-field" stylesheets="@../css/login.css" />
-            <HBox prefHeight="25.0" prefWidth="379.0">
+            
+            <VBox alignment="TOP_LEFT" maxWidth="320.0" prefWidth="300.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <CheckBox mnemonicParsing="false" styleClass="check-box-custom" text="Mostrar contraseña" textFill="WHITE" />
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="exit-button" text="Salir">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/exitIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  
+                  <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" maxHeight="100.0" maxWidth="255.0" prefHeight="100.0" prefWidth="255.0" promptText="Cambiar idioma" styleClass="combo-idioma" visibleRowCount="2">
+                     <VBox.margin>
+                        <Insets top="550.0" />
+                     </VBox.margin></ComboBox>
                </children>
-            </HBox>
-            <Button mnemonicParsing="false" styleClass="btn-primary" stylesheets="@../css/login.css" text="INICIAR SESIÓN" textFill="#bebebe" />
-            <Hyperlink styleClass="btn-link" stylesheets="@../css/login.css" text="¿Olvidaste tu contraseña?" />
+               <padding>
+                  <Insets left="30.0" top="40.0" />
+               </padding>
+            </VBox>
+
+            <VBox alignment="CENTER" maxWidth="480.0" minWidth="450.0" prefWidth="460.0" spacing="20.0" HBox.hgrow="NEVER">
+               <children>
+                  <ImageView fitHeight="120.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/idonfilingenimore.png" />
+                     </image>
+                  </ImageView>
+                  
+                  <VBox alignment="CENTER" spacing="20.0" styleClass="login-box">
+                     <children>
+                        <Label styleClass="label-title" text="INICIO DE SESIÓN" />
+                        <TextField fx:id="emailField" maxWidth="360.0" promptText="Correo electrónico" styleClass="text-input-field" />
+                        <PasswordField fx:id="passwordField" maxWidth="360.0" promptText="Contraseña" styleClass="text-input-field" />
+                        <TextField fx:id="txtPasswordMascarado" managed="false" maxWidth="360.0" promptText="Contraseña" styleClass="text-input-field" visible="false" />
+                        
+                        <HBox alignment="CENTER_LEFT" maxWidth="360.0">
+                           <children>
+                              <CheckBox fx:id="mostrarPasswordCheckBox" mnemonicParsing="false" onAction="#togglePassword" styleClass="check-box-custom" text="Mostrar contraseña" />
+                           </children>
+                        </HBox>
+                        
+                        <Button maxWidth="360.0" mnemonicParsing="false" styleClass="btn-primary" text="INICIAR SESIÓN" />
+                        <Hyperlink styleClass="btn-link" text="¿Olvidaste tu contraseña?" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox alignment="CENTER" spacing="12.0" styleClass="register-box">
+                     <children>
+                        <Label styleClass="label-subtitle" text="¿No tienes una cuenta?" />
+                        <Button maxWidth="360.0" mnemonicParsing="false" onAction="#goToRegister" styleClass="btn-crearCuentaNueva" text="CREAR NUEVA CUENTA" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+
+            <VBox alignment="CENTER_RIGHT" maxWidth="320.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="true">
+                     <children>
+                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/warningIcon.png" />
+                           </image>
+                        </ImageView>
+                        <Label styleClass="warning-message" text="Por favor, contesta los campos para continuar." />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets right="30.0" />
+               </padding>
+            </VBox>
+            
          </children>
-         <StackPane.margin>
-            <Insets bottom="100.0" left="500.0" right="500.0" top="90.0" />
-         </StackPane.margin>
-      </VBox>
-      <VBox fillWidth="false" maxHeight="380.0" prefHeight="380.0" prefWidth="133.0" styleClass="warning-box" stylesheets="@../css/login.css" StackPane.alignment="TOP_RIGHT">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/warningIcon.png" />
-               </image>
-            </ImageView>
-            <Label maxWidth="362.0" prefHeight="102.0" prefWidth="307.0" styleClass="warning-message" text="Por favor, contesta los campos para continuar." textAlignment="CENTER" textFill="WHITE" wrapText="true" />
-         </children>
-         <StackPane.margin>
-            <Insets right="30.0" top="50.0" />
-         </StackPane.margin>
-      </VBox>
-      <VBox alignment="TOP_RIGHT" prefHeight="890.0" prefWidth="450.0" styleClass="success-box" stylesheets="@../css/login.css" visible="false" StackPane.alignment="TOP_RIGHT">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <Label />
-            <Button mnemonicParsing="false" styleClass="success-button" text="Button" />
-         </children>
-         <StackPane.margin>
-            <Insets right="30.0" top="50.0" />
-         </StackPane.margin>
-      </VBox>
-      <VBox alignment="BOTTOM_CENTER" maxHeight="462.0" maxWidth="554.0" prefHeight="100.0" prefWidth="554.0" styleClass="register-box" stylesheets="@../css/login.css" StackPane.alignment="BOTTOM_CENTER">
-         <children>
-            <Label styleClass="label-subtitle" text="¿No tienes una cuenta?" />
-            <Button mnemonicParsing="false" styleClass="btn-crearCuentaNueva" stylesheets="@../css/login.css" text="CREAR NUEVA CUENTA" textFill="#bebebe" />
-         </children>
-         <StackPane.margin>
-            <Insets bottom="20.0" />
-         </StackPane.margin>
-      </VBox>
-      <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="101.0" prefWidth="267.0" styleClass="exit-button" stylesheets="@../css/login.css" text="Salir" StackPane.alignment="TOP_LEFT">
-         <graphic>
-            <ImageView fitHeight="89.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/exitIcon.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <StackPane.margin>
-            <Insets left="50.0" top="20.0" />
-         </StackPane.margin>
-      </Button>
+      </HBox>
    </children>
 </StackPane>

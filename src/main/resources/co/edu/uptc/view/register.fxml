@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.RegisterController">
+   <children>
+      <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/loginbackground.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="450.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
+         <image>
+            <Image url="@../images/idonfilingenimore.png" />
+         </image>
+         <StackPane.margin>
+            <Insets top="20.0" />
+         </StackPane.margin>
+      </ImageView>
+      <VBox alignment="CENTER" styleClass="registerAccount-box" stylesheets="@../css/register.css" StackPane.alignment="CENTER">
+         <children>
+            <Label styleClass="label-title" stylesheets="@../css/register.css" text="CREAR CUENTA NUEVA" />
+            <TextField promptText="Correo electrónico" styleClass="text-input-field" />
+            <PasswordField promptText="Contraseña" styleClass="text-input-field" />
+            <HBox prefHeight="25.0" prefWidth="379.0">
+               <children>
+                  <CheckBox mnemonicParsing="false" styleClass="check-box-custom" text="Mostrar contraseña" textFill="WHITE" />
+               </children>
+            </HBox>
+            <PasswordField promptText="Confirmar contraseña" styleClass="text-input-field" />
+            <Label prefHeight="10.0" prefWidth="412.0" styleClass="label-subtitle" stylesheets="@../css/register.css" text="Nombre de la ciudad donde naciste:">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <TextField cacheShape="false" promptText="Respuesta" styleClass="text-input-field" />
+            <Button mnemonicParsing="false" styleClass="btn-primary" stylesheets="@../css/login.css" text="CREAR CUENTA" textFill="#bebebe" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <StackPane.margin>
+            <Insets top="120.0" />
+         </StackPane.margin>
+      </VBox>
+      <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" maxHeight="100.0" maxWidth="400.0" promptText="Cambiar idioma" styleClass="combo-idioma" stylesheets="@../css/login.css" visibleRowCount="2" StackPane.alignment="BOTTOM_LEFT">
+         <StackPane.margin>
+            <Insets bottom="30.0" left="50.0" />
+         </StackPane.margin>
+      </ComboBox>
+      <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#backToLogin" prefHeight="77.0" prefWidth="246.0" styleClass="exit-button" stylesheets="@../css/login.css" text="Volver" StackPane.alignment="TOP_LEFT">
+         <graphic>
+            <ImageView fitHeight="89.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/flechaIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <StackPane.margin>
+            <Insets left="50.0" top="20.0" />
+         </StackPane.margin>
+      </Button>
+   </children>
+</StackPane>

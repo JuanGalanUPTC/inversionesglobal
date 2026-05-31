@@ -1,220 +1,30 @@
 /* ====================================================================
-   1. REGISTRO DE FUENTES PERSONALIZADAS
+   1. CONFIGURACIÓN BASE RESPONSIVA Y FONDO
    ==================================================================== */
-
-/* ====================================================================
-   2. ESTILOS GENERALES Y CONTENEDOR PRINCIPAL
-   ==================================================================== */
-.root-container {
+.root {
     -fx-font-family: 'Roboto', 'Segoe UI', sans-serif;
 }
 
-/* Fondo oscuro translúcido para las tarjetas (Paneles Centrales) */
-.card-panel {
-    -fx-background-color: rgba(43, 45, 49, 0.82); /* Gris oscuro con 82% de opacidad */
-    -fx-background-radius: 16px;
-    -fx-border-radius: 16px;
-    -fx-border-color: rgba(255, 255, 255, 0.12); /* Borde sutil brillante */
-    -fx-border-width: 1px;
+/* Contenedor principal que ahora gestiona el fondo de forma nativa */
+.root-container {
+    -fx-background-image: url("../images/loginbackground.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
 }
 
-/* ====================================================================
-   3. CAMPOS DE TEXTO (TEXTFIELD / PASSWORDFIELD)
-   ==================================================================== */
-.text-input-field {
-    -fx-background-color: rgba(28, 30, 33, 0.7); /* Fondo más oscuro para los inputs */
-    -fx-background-radius: 8px;
+/* Estilo personalizado para el ComboBox de Idioma */
+.combo-idioma {
+    -fx-background-color: rgba(40, 40, 40,0.6);
+    -fx-border-color: #bebebe;
+    -fx-border-width: 1px;
     -fx-border-radius: 8px;
-    -fx-border-color: rgba(255, 255, 255, 0.2);
-    -fx-border-width: 1px;
-    -fx-text-fill: #FFFFFF; /* Texto blanco al escribir */
-    -fx-prompt-text-fill: #9AA0A6; /* Texto de sugerencia gris */
-    -fx-padding: 10px;
-    -fx-font-size: 23px;
-}
-
-/* Efecto cuando el usuario hace clic dentro del campo de texto */
-.text-input-field:focused {
-    -fx-border-color: #3A86FF; /* Borde azul financiero */
-    -fx-background-color: rgba(28, 30, 33, 0.9);
-}
-
-/* 1. EL CONTENEDOR PRINCIPAL (VBox de Éxito) */
-.success-box {
-    -fx-background-color: #279962;                /* Verde base de tu imagen */
-    -fx-background-radius: 40px;                   /* Bordes muy redondeados */
-    -fx-border-color: rgba(0, 0, 0, 0.15);         /* Borde sutil oscuro */
-    -fx-border-radius: 40px;
-    -fx-border-width: 1px;
-    -fx-padding: 40px 50px 40px 50px;              /* Espaciado interno generoso */
-    -fx-spacing: 25px;                             /* Separación vertical entre el icono, texto y botón */
-    -fx-alignment: center;                         /* Centra todo el contenido */
-    -fx-max-width: 40px;  
-    -fx-max-height: 200px;                            /* Mantiene la proporción en 1920x1080 */
-}
-
-/* 1. EL CONTENEDOR PRINCIPAL (VBox de Advertencia) */
-.warning-box {
-    -fx-background-color: #A38413;                /* Color mostaza/dorado exacto de la imagen */
-    -fx-background-radius: 40px;                   /* Bordes muy redondeados idénticos a los anteriores */
-    -fx-border-color: rgba(0, 0, 0, 0.15);         /* Borde sutil oscuro para dar profundidad */
-    -fx-border-radius: 40px;
-    -fx-border-width: 1px;
-    -fx-padding: 40px 45px 50px 45px;              /* Un poco más de espacio abajo para compensar la falta de botón */
-    -fx-spacing: 25px;                             /* Separación vertical entre el icono y el texto */
-    -fx-alignment: center;                         /* Centra todo el contenido de forma vertical y horizontal */        
-    -fx-font-size: 20px;
-    -fx-max-width: 352px; 
-    -fx-max-height: 350px;              /* Mantiene la consistencia de tamaño con los otros cuadros */
-}
-
-
-/* 2. EL TEXTO DE ADVERTENCIA */
-.warning-message {
-    -fx-font-family: 'Roboto';
-    -fx-font-size: 22px;
+    -fx-background-radius: 8px;
     -fx-text-fill: #FFFFFF;
-    
-    /* 🛠️ LAS TRES LÍNEAS DE ORO PARA ARREGLAR EL CORTE: */
-    -fx-wrap-text: true;                 /* Fuerza el salto de línea automático si es largo */
-    -fx-text-alignment: center;          /* Centra los renglones de texto entre sí */
-    -fx-alignment: center;               /* Centra el bloque completo dentro del VBox */
-    
-    -fx-line-spacing: 4px;
-    -fx-max-width: 360px;                      /* Espaciado de renglón limpio */
+    -fx-font-size: 14px;
 }
 
-/* 2. EL ICONO DE CHECK (Si usas un SVG, Image o Región) */
-.success-icon {
-    /* Si usas un ImageView o una figura, puedes darle este color al trazo o fondo */
-    -fx-fill: #1A6B43;                             /* Verde oscuro para el check interno */
-}
-
-/* 3. EL TEXTO DE CONFIRMACIÓN */
-.success-message {
-    -fx-font-family: 'Roboto';
-    -fx-font-size: 20px;
-    -fx-text-fill: #FFFFFF;                        /* Texto completamente blanco */
-    -fx-alignment: center;
-    -fx-text-alignment: center;                    /* Centra las líneas de texto */
-    -fx-line-spacing: 5px;                         /* Separa un poco las líneas para legibilidad */
-}
-
-/* 4. EL BOTÓN "IR A INICIO DE SESIÓN" */
-.success-button {
-    -fx-background-color: #69D49E;                 /* Verde claro brillante del botón */
-    -fx-background-radius: 25px;                   /* Botón con estilo de píldora */
-    -fx-text-fill: #FFFFFF;                        /* Texto blanco */
-    -fx-font-family: 'Roboto';
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-max-height: 50px;
-    -fx-max-width: 20px;
-    -fx-cursor: hand;
-    
-    /* Sombra paralela sutil e idéntica a la del mockup */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 8, 0, 0, 4);
-}
-
-/* Efecto Hover para el botón (Cuando pasas el mouse) */
-.success-button:hover {
-    -fx-background-color: #7BEBA9;                 /* Se aclara ligeramente al pasar el mouse */
-}
-
-/* ====================================================================
-   4. BOTONES
-   ==================================================================== */
-/* Botón Principal (Iniciar Sesión / Crear Cuenta) */
-.btn-primary {
-    -fx-background-color: #383838; /* Gris claro/blanco del mockup */
-    -fx-border-color: white;
-    -fx-border-width: 1px;
-    -fx-border-radius: 24px;
-    -fx-background-radius: 24px;   /* Súper redondeado */
-    -fx-text-fill: #bebebe;        /* Texto oscuro interno */
-    -fx-font-weight: bold;
-    -fx-font-size: 30px;
-    -fx-padding: 10px 24px;
-    -fx-cursor: hand;
-    -fx-pref-width: 500px;
-}
-
-.btn-primary:hover {
-    -fx-background-color: #585858; /* Brilla un poco más al pasar el mouse */
-}
-
-.btn-crearCuentaNueva {
-    -fx-background-color: #383838; /* Gris claro/blanco del mockup */
-    -fx-border-color: white;
-    -fx-border-width: 1px;
-    -fx-border-radius: 24px;
-    -fx-background-radius: 24px;   /* Súper redondeado */
-    -fx-text-fill: #bebebe;        /* Texto oscuro interno */
-    -fx-font-weight: bold;
-    -fx-font-size: 25px;
-    -fx-padding: 10px 24px;
-    -fx-cursor: hand;
-    -fx-pref-width: 500px;
-}
-
-.btn-crearCuentaNueva:hover {
-    -fx-background-color: #585858; /* Brilla un poco más al pasar el mouse */
-}
-
-.btn-crearCuentaNueva:pressed {
-    -fx-background-color: #585858; /* Brilla un poco más al pasar el mouse */
-}
-
-.btn-primary:pressed {
-    -fx-background-color: #CBD5E1; /* Se oscurece al hundirlo */
-}
-
-/* Botón Secundario Transparente (Olvidé mi contraseña) */
-.btn-link {
-    -fx-background-color: transparent;
-    -fx-text-fill: #ffffff;
-    -fx-underline: true; /* Subrayado del mockup */
-    -fx-cursor: hand;
-    -fx-font-size: 20px;
-}
-
-.btn-link:hover {
-    -fx-text-fill: #FFFFFF;
-}
-
-
-.login-box {
-    -fx-background-color: rgba(70, 70, 70); /* Gris oscuro con transparencia */
-    -fx-background-radius: 30px;                   /* Bordes muy redondeados como la imagen */
-    -fx-border-color: #bebebe;    /* Borde fino exterior blanco/translúcido */
-    -fx-border-radius: 30px;
-    -fx-border-width: 1.5px;
-    -fx-padding: 30px 40px 30px 40px;             /* Espaciado interno para que no sature */
-    -fx-spacing: 15px;                             /* Separación vertical entre elementos */
-    -fx-alignment: center;                         /* Centra todo el contenido internamente */
-    -fx-max-width: 450px;
-    -fx-max-height: 250px;          
-    -fx-text-alignment: left;                  /* Controla el ancho máximo en tus 1920x1080 */
-}
-
-.register-box {
-    -fx-background-color: rgba(70, 70, 70); /* Gris oscuro con transparencia */
-    -fx-background-radius: 30px;                   /* Bordes muy redondeados como la imagen */
-    -fx-border-color: #bebebe;    /* Borde fino exterior blanco/translúcido */
-    -fx-border-radius: 30px;
-    -fx-border-width: 1.5px;
-    -fx-padding: 30px 40px 30px 40px;             /* Espaciado interno para que no sature */
-    -fx-spacing: 15px;                             /* Separación vertical entre elementos */
-    -fx-alignment: center;                         /* Centra todo el contenido internamente */
-    -fx-max-width: 450px;
-    -fx-max-height: 10px;          
-    -fx-text-alignment: left;                  /* Controla el ancho máximo en tus 1920x1080 */
-}
-
-/* ====================================================================
-   5. COMPONENTES DE LAS ESQUINAS (IDIOMA / SALIR)
-   ==================================================================== */
-/* ComboBox de Idioma */
+/* Fuerza al menú desplegable del ComboBox a posicionarse arriba del botón */
 .combo-idioma {
     -fx-background-color: rgba(60, 64, 67, 0.6);
     -fx-background-radius: 6px;
@@ -222,8 +32,8 @@
     -fx-border-color: rgba(255, 255, 255, 0.15);
     -fx-text-fill: #E8EAED;
     -fx-prompt-text-fill: #E8EAED;
-    -fx-padding: 6px 12px;
-    -fx-font-size: 40px; 
+    -fx-padding: 2px 4p;
+    -fx-font-size: 30px; 
     -fx-font-weight: bold;
 }
 
@@ -232,79 +42,130 @@
     -fx-background-color: #2B2D31; /* Fondo de la lista desplegable */
 }
 
-/* Botón Salir */
-.btn-salir {
-    -fx-background-color: rgba(60, 64, 67, 0.6);
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-border-color: rgba(255, 255, 255, 0.2);
+/* ====================================================================
+   2. ENTRADAS DE TEXTO
+   ==================================================================== */
+.text-input-field {
+    -fx-background-color: rgba(28, 30, 33, 0.85); 
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: rgba(255, 255, 255, 0.4);
+    -fx-border-width: 1px;
     -fx-text-fill: #FFFFFF;
-    -fx-font-weight: bold;
-    -fx-padding: 6px 16px;
+    -fx-prompt-text-fill: #9AA0A6;
+    -fx-padding: 12px 14px;
+    -fx-font-size: 16px;
 }
 
-.btn-salir:hover {
-    -fx-background-color: rgba(224, 68, 68, 0.8); /* Rojo sutil al salir */
-}
-
-/* EL BOTÓN DE SALIR (Estilo Cápsula) */
-.exit-button {
-    -fx-background-color: #3A3A3A;                /* Gris oscuro idéntico al fondo del botón */
-    -fx-background-radius: 50px;                   /* Bordes totalmente redondeados (cápsula) */
-    -fx-border-color: rgba(255, 255, 255, 0.9);    /* Borde exterior blanco definido */
-    -fx-border-radius: 50px;
-    -fx-border-width: 1.5px;
-    
-    /* Fuentes y dimensiones */
-    -fx-font-family: 'Roboto';
-    -fx-font-size: 30px;                           /* Tamaño imponente para el texto "Salir" */
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;                        /* Texto completamente blanco */
-    
-    /* Estructura interna */
-    -fx-padding: 10px 30px 10px 25px;              /* Margen interno para dar forma horizontal */
-    -fx-graphic-text-gap: 15px;                    /* Separación exacta entre el icono y el texto */
-    -fx-alignment: center;                         /* Centra el bloque interno */
-    -fx-cursor: hand;                              /* Cambia el cursor a la mano */
-}
-
-/* Efecto al pasar el mouse por encima (Hover) */
-.exit-button:hover {
-    -fx-background-color: #4A4A4A;                /* Se aclara sutilmente */
-    -fx-border-color: #FFFFFF;                     /* El borde brilla al 100% */
+.text-input-field:focused {
+    -fx-border-color: #3A86FF;
+    -fx-background-color: rgba(28, 30, 33, 0.95);
 }
 
 /* ====================================================================
-   6. TEXTOS Y LABELS
+   3. TARJETAS CONTENEDORAS COMPACTAS (Límites de tamaño estrictos)
+   ==================================================================== */
+.login-box {
+    -fx-background-color: rgba(60, 60, 60); 
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #bebebe;
+    -fx-border-width: 1.5px;
+    -fx-padding: 30px;
+    -fx-pref-width: 440px;
+    -fx-max-width: 440px; /* Candado horizontal para que no se estire */
+}
+
+.register-box {
+    -fx-background-color: rgba(60, 60, 60, 0.85);
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #bebebe;
+    -fx-border-width: 1.5px;
+    -fx-padding: 20px 30px;
+    -fx-pref-width: 440px;
+    -fx-max-width: 440px; /* Candado horizontal */
+}
+
+/* ====================================================================
+   4. MODALES DE ESTADO (Warning)
+   ==================================================================== */
+.warning-box {
+    -fx-background-color: #A38413;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-color: rgba(0, 0, 0, 0.2);
+    -fx-border-width: 1px;
+    -fx-padding: 30px;
+    -fx-pref-width: 280px;
+    -fx-max-width: 280px; /* Evita que el warning se vuelva gigante */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);
+}
+
+.warning-message {
+    -fx-font-size: 16px;
+    -fx-text-fill: #FFFFFF;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+/* ====================================================================
+   5. BOTONES Y LINKS ALTERNATIVOS
+   ==================================================================== */
+.btn-primary, .btn-crearCuentaNueva {
+    -fx-background-color: #383838;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-text-fill: #bebebe;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 12px 20px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover, .btn-crearCuentaNueva:hover {
+    -fx-background-color: #585858;
+}
+
+.btn-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-underline: true;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.exit-button {
+    -fx-background-color: #3A3A3A;
+    -fx-background-radius: 30px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 30px;
+    -fx-border-width: 1.5px;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 6px 20px;
+    -fx-cursor: hand;
+}
+
+/* ====================================================================
+   6. LABELS GENERALES
    ==================================================================== */
 .label-title {
     -fx-text-fill: #FFFFFF;
     -fx-font-weight: bold;
-    -fx-font-size: 35px;
-    -fx-text-alignment: center;
+    -fx-font-size: 24px;
 }
 
 .label-subtitle {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 25px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
 }
 
 .check-box-custom {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 20px;
-}
-
-.check-box-custom .box {
-    -fx-background-color: rgba(28, 30, 33, 0.7);
-    -fx-border-color: rgba(255, 255, 255, 0.3);
-    -fx-border-radius: 3px;
-}
-
-/* Quita el fondo azul horrible de selección de JavaFX por defecto */
-.combo-idioma .list-cell:hover {
-    -fx-background-color: rgba(60, 64, 67, 0.8);
-}
-
-.combo-idioma .list-cell:filled:selected {
-    -fx-background-color: rgba(43, 45, 49, 1);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
 }
