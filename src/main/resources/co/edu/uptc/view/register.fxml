@@ -14,18 +14,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root-container" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.LoginController">
+<StackPane styleClass="root-container" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.RegisterController">
    <children>
       <HBox alignment="CENTER" spacing="20.0">
          <children>
             
             <VBox alignment="TOP_LEFT" maxWidth="320.0" prefWidth="300.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="exit-button" text="Salir">
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#backToLogin" prefHeight="57.0" prefWidth="162.0" styleClass="exit-button" stylesheets="@../css/login.css" text="Volver">
                      <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="51.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/exitIcon.png" />
+                              <Image url="@../images/flechaIcon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -51,7 +51,7 @@
                   
                   <VBox alignment="CENTER" spacing="20.0" styleClass="login-box">
                      <children>
-                        <Label styleClass="label-title" text="INICIO DE SESIÓN" />
+                        <Label styleClass="label-title" text="CREAR CUENTA NUEVA " />
                         <TextField fx:id="emailField" maxWidth="360.0" promptText="Correo electrónico" styleClass="text-input-field" />
                         <PasswordField fx:id="passwordField" maxWidth="360.0" promptText="Contraseña" styleClass="text-input-field" />
                         <TextField fx:id="txtPasswordMascarado" managed="false" maxWidth="360.0" promptText="Contraseña" styleClass="text-input-field" visible="false" />
@@ -61,16 +61,11 @@
                               <CheckBox fx:id="mostrarPasswordCheckBox" mnemonicParsing="false" onAction="#togglePassword" styleClass="check-box-custom" text="Mostrar contraseña" />
                            </children>
                         </HBox>
+                        <PasswordField fx:id="passwordField1" maxWidth="360.0" promptText="Confirmar contraseña" styleClass="text-input-field" />
+                        <Label styleClass="label-subtitle" stylesheets="@../css/register.css" text="Nombre de la ciudad donde naciste:" />
+                        <TextField fx:id="emailField1" maxWidth="360.0" promptText="Respuesta" styleClass="text-input-field" />
                         
-                        <Button maxWidth="360.0" mnemonicParsing="false" styleClass="btn-primary" text="INICIAR SESIÓN" />
-                        <Hyperlink styleClass="btn-link" text="¿Olvidaste tu contraseña?" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox alignment="CENTER" spacing="12.0" styleClass="register-box">
-                     <children>
-                        <Label styleClass="label-subtitle" text="¿No tienes una cuenta?" />
-                        <Button maxWidth="360.0" mnemonicParsing="false" onAction="#goToRegister" styleClass="btn-crearCuentaNueva" text="CREAR NUEVA CUENTA" />
+                        <Button maxWidth="360.0" mnemonicParsing="false" onAction="#handleRegister" styleClass="btn-primary" text="CREAR CUENTA" />
                      </children>
                   </VBox>
                </children>
@@ -78,14 +73,25 @@
 
             <VBox alignment="CENTER_RIGHT" maxWidth="320.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="true">
+                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="false" managed="false">
+   <children>
+      <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/warningIcon.png" />
+         </image>
+      </ImageView>
+      
+      <Label fx:id="warningMessage" styleClass="warning-message" text="Campos obligatorios" wrapText="true" />
+   </children>
+</VBox>
+                  <VBox fx:id="warningBox1" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="false" managed="false">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/warningIcon.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="warning-message" text="Por favor, contesta los campos para continuar." />
+                        <Label styleClass="warningMessage" text="Por favor, contesta los campos para continuar." />
                      </children>
                   </VBox>
                </children>

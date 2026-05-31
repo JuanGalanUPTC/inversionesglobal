@@ -1,55 +1,36 @@
 package co.edu.uptc.model;
 
-/**
- * Representa las credenciales y el acceso de una cuenta al sistema.
- */
 public class User {
-    private String investorId; // Vincula este login con su billetera financiera
-    private String username; // Puede ser el mismo email o un nickname único
-    private String password; // En un entorno real iría encriptada (Hash)
-    private String role; // Opcional: "ADMIN" (para crear activos) o "INVESTOR" (para comprar)
+    private String id;
+    private String email;
+    private String password;
+    private String ciudadNacimiento;
 
-    public User() {
-    }
-
-   
-    public User(String investorId, String username, String password, String role) {
-        this.investorId = investorId;
-        this.username = username;
+    public User(String id,String email, String password, String ciudadNacimiento) {
+        this.email = email;
         this.password = password;
-        this.role = role;
+        this.ciudadNacimiento = ciudadNacimiento;
     }
 
+    // Getters y Setters (Obligatorios para que Gson los procese)
 
-    public String getUsername() {
-        return username;
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getCiudadNacimiento() { return ciudadNacimiento; }
+    public void setCiudadNacimiento(String ciudadNacimiento) { this.ciudadNacimiento = ciudadNacimiento; }
+
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getInvestorId() {
-        return investorId;
-    }
-
-    public void setInvestorId(String investorId) {
-        this.investorId = investorId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    
 }
