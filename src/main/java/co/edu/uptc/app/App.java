@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,7 +30,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        Font.loadFont(getClass().getResourceAsStream("/co/edu/uptc/fonts/Roboto-Regular.ttf"), 12);
+        scene = new Scene(loadFXML("login"), 1200, 720);
+        stage.setTitle("GLOBAL");
         stage.setScene(scene);
         stage.show();
     }
@@ -43,11 +46,11 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    public static void mainv(String[] args) {
+    public static void main(String[] args) {
         launch();
     }
 
-    public static void main(String[] args) {
+    public static void mainC(String[] args) {
         // 1. INICIALIZACIÓN DE SERVICIOS
         AssetService assetService = new AssetService();
         InvestorService investorService = new InvestorService();

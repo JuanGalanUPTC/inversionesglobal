@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "6a3c45fd-1d94-4376-ad1b-b8c4fe75c9f3",
+    "inversionistId": "53822eb1-9e09-4f4f-8ae7-0e0ad504f0a5",
+    "assetId": "3f9e56f5-6161-4514-a344-776ef82df368",
+    "amount": 2.0,
+    "purchasePrice": 400.0,
+    "date": "2026-05-30",
+    "time": "16:44:33.119063900"
+  }
+]
