@@ -24,7 +24,7 @@ import javafx.util.Duration;
 
 public class RegisterController implements Initializable {
 
-    UserService userService=new UserService();
+    UserService userService = new UserService();
     @FXML
     private ComboBox<String> idiomaComboBox;
 
@@ -130,6 +130,7 @@ public class RegisterController implements Initializable {
     /**
      * Lógica de Registro con todas las validaciones de tus campos FXML
      */
+
     @FXML
     private void handleRegister() throws IOException {
         String email = emailField.getText().trim();
@@ -152,21 +153,28 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // 3. Validar longitud mínima de la contraseña
-        if (password.length() < 6) {
-            mostrarAlerta("La contraseña debe tener al menos 6 caracteres.");
+        // 3. Validar longitud mínima de la contraseña (Mínimo 8 caracteres)
+        if (password.length() < 8) {
+            mostrarAlerta("La contraseña debe tener al menos 8 caracteres.");
             return;
         }
 
-        // 4. Validar que ambas contraseñas coincidan rigurosamente
+        // 4. Validar complejidad (Una mayúscula, una minúscula, un número y un símbolo
+        // específico)
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$";
+        if (!password.matches(passwordRegex)) {
+            mostrarAlerta("La contraseña debe incluir mayúscula, minúscula, número y un símbolo (@$!%*?&).");
+            return;
+        }
+
+        // 5. Validar que ambas contraseñas coincidan rigurosamente
         if (!password.equals(confirmPassword)) {
             mostrarAlerta("Las contraseñas ingresadas no coinciden.");
             return;
         }
 
         try {
-            // 🛠️ LLAMADA CORREGIDA: Pasamos email, password y la respuesta de la ciudad de
-            // nacimiento
+            // Enviar al servicio de persistencia
             userService.registerUser(email, password, ciudadNacimiento);
 
             // --- REGISTRO EXITOSO ---
@@ -184,9 +192,6 @@ public class RegisterController implements Initializable {
             mostrarAlerta("Error crítico al guardar en el archivo JSON.");
             e.printStackTrace();
         }
-
-        limpiarCampos();
-        regresarAlLogin();
     }
 
     /**

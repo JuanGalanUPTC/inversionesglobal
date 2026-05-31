@@ -17,8 +17,10 @@ public class UserService {
      * Constructor por defecto usando la ruta de persistencia universal.
      */
     public UserService() {
-        Type type = new TypeToken<List<User>>() {}.getType();
-        // Usamos '/' universales para evitar problemas de compatibilidad entre sistemas operativos
+        Type type = new TypeToken<List<User>>() {
+        }.getType();
+        // Usamos '/' universales para evitar problemas de compatibilidad entre sistemas
+        // operativos
         this.userRepo = new JsonRepository<>("src/main/resources/data/user.json", type);
     }
 
@@ -31,6 +33,7 @@ public class UserService {
 
     /**
      * Valida si las credenciales coinciden para iniciar sesión.
+     * 
      * @return El usuario autenticado si es exitoso, o un Optional vacío si falla.
      */
     public Optional<User> authenticate(String email, String password) {
@@ -38,35 +41,49 @@ public class UserService {
             return Optional.empty();
         }
 
-        return userRepo.findBy(user ->
-            user.getEmail().equalsIgnoreCase(email.trim()) &&
-            user.getPassword().equals(password)
-        );
+        return userRepo.findBy(user -> user.getEmail().equalsIgnoreCase(email.trim()) &&
+                user.getPassword().equals(password));
     }
 
     /**
      * Registra un nuevo usuario en el sistema con su pregunta de seguridad.
      */
     public void registerUser(String email, String password, String respuestaSeguridad) {
-        if (email == null || email.isBlank() || password == null || password.isBlank() || respuestaSeguridad == null || respuestaSeguridad.isBlank()) {
+        if (email == null || email.isBlank() || password == null || password.isBlank() || respuestaSeguridad == null
+                || respuestaSeguridad.isBlank()) {
             throw new IllegalArgumentException("CREDENTIALS_CANNOT_BE_EMPTY");
         }
-        
+
         String cleanedEmail = email.trim();
         String cleanedRespuesta = respuestaSeguridad.trim();
 
         // Validar si el correo ya está registrado en el JSON
-        boolean emailExists = userRepo.findBy(user -> user.getEmail().equalsIgnoreCase(cleanedEmail)).isPresent();
-        if (emailExists) {
-            throw new IllegalArgumentException("USERNAME_ALREADY_TAKEN");
-        }
+        verifyEmailExists(cleanedEmail);
 
         try {
-            // 🛠️ Instancia de User con la estructura limpia: Correo, Contraseña y Respuesta
+            // 🛠️ Instancia de User con la estructura limpia: Correo, Contraseña y
+            // Respuesta
             User newUser = new User(UUID.randomUUID().toString(), cleanedEmail, password, cleanedRespuesta);
             userRepo.save(newUser);
         } catch (RuntimeException e) {
             throw new RuntimeException("Error trying to save the user credentials.", e);
         }
     }
+
+    public boolean verifyEmailExists(String correo) {
+    if (correo == null || correo.isBlank()) {
+        return false;
+    }
+    try {
+        String cleanedCorreo = correo.trim();
+        // 🛡️ Protegido contra nulos (user.getEmail() != null) para evitar el NullPointerException
+        return userRepo.findBy(user -> 
+            user.getEmail() != null && user.getEmail().equalsIgnoreCase(cleanedCorreo)
+        ).isPresent();
+        
+    } catch (Exception e) {
+        // Excepción genérica real por si falla la lectura del archivo físico
+        throw new RuntimeException("Error al consultar la persistencia de usuarios.", e);
+    }
+}
 }

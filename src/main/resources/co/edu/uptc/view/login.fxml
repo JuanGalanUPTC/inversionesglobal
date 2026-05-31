@@ -62,8 +62,8 @@
                            </children>
                         </HBox>
                         
-                        <Button maxWidth="360.0" mnemonicParsing="false" styleClass="btn-primary" text="INICIAR SESIÓN" />
-                        <Hyperlink styleClass="btn-link" text="¿Olvidaste tu contraseña?" />
+                        <Button maxWidth="360.0" mnemonicParsing="false" onAction="#handleLogin" styleClass="btn-primary" text="INICIAR SESIÓN" />
+                        <Hyperlink fx:id="hyperlinkOlvidastePassword" onAction="#handleHyperLinkOlvidastePassword" styleClass="btn-link" text="¿Olvidaste tu contraseña?" />
                      </children>
                   </VBox>
                   
@@ -78,14 +78,14 @@
 
             <VBox alignment="CENTER_RIGHT" maxWidth="320.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="warningBox" alignment="CENTER" spacing="20.0" styleClass="warning-box" visible="true">
+                  <VBox fx:id="warningBox" alignment="CENTER" managed="false" spacing="20.0" styleClass="warning-box" visible="false">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/warningIcon.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="warning-message" text="Por favor, contesta los campos para continuar." />
+                        <Label fx:id="warningMessage" styleClass="warningMessage" text="Por favor, contesta los campos para continuar." />
                      </children>
                   </VBox>
                </children>
