@@ -12,10 +12,10 @@
 
 <ScrollPane fitToWidth="true" 
             styleClass="scroll-container" 
-            stylesheets="@../css/misInversiones.css" 
+            stylesheets="@../../css/misInversiones.css" 
             xmlns="http://javafx.com/javafx/26" 
             xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="co.edu.uptc.viewcontroller.MisInversionesController">
+            fx:controller="co.edu.uptc.viewcontroller.investor.MisInversionesController">
     <content>
         <VBox spacing="20.0" styleClass="root-container">
             <padding>
@@ -46,7 +46,7 @@
                 <StackPane styleClass="icon-container">
                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../images/lupa_icon.png" /> 
+                            <Image url="@../../images/lupa_icon.png" /> 
                         </image>
                     </ImageView>
                 </StackPane>

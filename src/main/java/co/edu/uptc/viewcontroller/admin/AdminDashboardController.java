@@ -1,4 +1,4 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.admin;
 
 public class AdminDashboardController {
     

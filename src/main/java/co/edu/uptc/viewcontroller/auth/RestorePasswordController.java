@@ -1,12 +1,10 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.auth;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import co.edu.uptc.app.App;
-import co.edu.uptc.model.User;
 import co.edu.uptc.service.UserService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -22,28 +20,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class RestorePasswordSecurityQuestionController implements Initializable {
+public class RestorePasswordController implements Initializable {
     
     UserService userService = new UserService();
 
-    // 🛡️ Conservamos ÚNICAMENTE los elementos nativos de esta vista
-    @FXML private TextField securityAnswerField;
+    // 🛡️ En esta pantalla SOLO existen estos componentes básicos
+    @FXML private TextField emailField;
     @FXML private ComboBox<String> idiomaComboBox;
     @FXML private VBox warningBox;
     @FXML private Label warningMessage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Agregar los identificadores de los idiomas
+        // Inicialización del combobox de idioma
         idiomaComboBox.getItems().addAll("es", "en");
-
-        // 2. Definir cómo se verán los elementos en la lista desplegable
         idiomaComboBox.setCellFactory(param -> createCustomCell());
-
-        // 3. Definir cómo se verá el elemento SELECCIONADO en el botón principal
         idiomaComboBox.setButtonCell(createCustomCell());
-
-        // Seleccionar el primero por defecto
         idiomaComboBox.getSelectionModel().selectFirst();
 
         if (warningBox != null) {
@@ -53,44 +45,47 @@ public class RestorePasswordSecurityQuestionController implements Initializable 
     }
 
     /**
-     * Acción del botón "Aceptar" en el formulario de la pregunta de seguridad
+     * Acción del botón "Siguiente" o "Aceptar" en el formulario del correo
      */
     @FXML
-    private void handleAcceptSecurityQuestionForm() throws IOException {
-        String respuestaIngresada = securityAnswerField.getText().trim();
+    private void handleAcceptEmailForm() throws IOException {
+        String email = emailField.getText().trim();
 
-        if (respuestaIngresada.isEmpty()) {
-            mostrarAlerta("Por favor, escribe tu respuesta de seguridad.");
+        if (email.isEmpty()) {
+            mostrarAlerta("Por favor, escribe tu correo electrónico.");
+            return;
+        }
+
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            mostrarAlerta("El formato del correo electrónico no es válido.");
             return;
         }
 
         try {
-            Optional<User> userOpt = userService.findByEmail(App.emailARestablecer);
-            
-            if (userOpt.isPresent()) {
-                // Evaluamos si la respuesta guardada en el JSON coincide con la ingresada
-                if (userService.verifySecurityAnswer(userOpt.get(), respuestaIngresada)) {
-                    System.out.println("✅ Respuesta correcta. Avanzando al cambio de contraseña...");
-                    App.setRoot("restore_passwordFinal"); // Avanza al paso 3
-                } else {
-                    mostrarAlerta("La respuesta de seguridad es incorrecta.");
-                }
+            boolean emailExiste = userService.verifyEmailExists(email);
+
+            if (emailExiste) {
+                System.out.println("✅ El correo existe en user.json. Guardando puente y avanzando...");
+                
+                // 🔑 Guardamos el correo en la variable estática global de App
+                App.emailARestablecer = email;
+
+                // Saltamos a la segunda interfaz (Asegúrate de que este FXML use el controlador "RestorePasswordSecurityQuestionController")
+                App.setRoot("auth/restore_passwordSecurityQuestion");
             } else {
-                mostrarAlerta("Error al recuperar los datos del usuario actual.");
+                mostrarAlerta("El correo electrónico ingresado no está registrado.");
             }
+
         } catch (RuntimeException e) {
             mostrarAlerta("Error al conectar con la base de datos.");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Muestra la alerta visual en el warningBox modificando el texto internamente
-     */
     @FXML
     private void mostrarAlerta(String mensaje) {
         if (warningBox == null) {
-            System.out.println("[Alerta en consola por falta de binding]: " + mensaje);
+            System.out.println("[Alerta en consola]: " + mensaje);
             return;
         }
 
@@ -114,13 +109,11 @@ public class RestorePasswordSecurityQuestionController implements Initializable 
         delay.play();
     }
 
-    // Método auxiliar que construye la fila con Imagen + Texto Código + Texto Idioma
     private ListCell<String> createCustomCell() {
         return new ListCell<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || item == null) {
                     setGraphic(null);
                     setText(null);
@@ -150,16 +143,15 @@ public class RestorePasswordSecurityQuestionController implements Initializable 
                     } catch (Exception e) {
                         container.getChildren().add(lblName);
                     }
-
                     setGraphic(container);
                 }
             }
         };
     }
+    
 
-    @FXML 
-    public void backToLogin() throws IOException { 
-        App.emailARestablecer = null; // Limpieza preventiva de memoria
-        App.setRoot("login"); 
+    @FXML
+    public void backToLogin() throws IOException {
+        App.setRoot("auth/login");
     }
 }

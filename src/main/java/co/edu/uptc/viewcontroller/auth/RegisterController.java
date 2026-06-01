@@ -1,4 +1,4 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.auth;
 
 import java.io.IOException;
 import java.net.URL;
@@ -238,12 +238,12 @@ public class RegisterController implements Initializable {
 
     @FXML
     public void goToRegisterSuccess() throws IOException {
-        App.setRoot("register_succes");
+        App.setRoot("auth/register_succes");
     }
 
     @FXML
     public void backToLogin() throws IOException {
-        App.setRoot("register_succes");
+        App.setRoot("auth/login");
     }
 
 }

@@ -1,4 +1,4 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.investor;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,17 +40,17 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void mostrarMisInversiones() {
-        cambiarCentro("/co/edu/uptc/view/misInversiones.fxml");
+        cambiarCentro("/co/edu/uptc/view/investor/misInversiones.fxml");
     }
 
     @FXML
     private void mostrarReportes() {
-        cambiarCentro("/co/edu/uptc/view/reportes.fxml");
+        cambiarCentro("/co/edu/uptc/view/investor/reportes.fxml");
     }
 
     @FXML
     private void mostrarActivos() {
-        cambiarCentro("/co/edu/uptc/view/activosView.fxml");
+        cambiarCentro("/co/edu/uptc/view/investor/activosView.fxml");
     }
     @FXML
     public void handleCerrarSesion(ActionEvent event) {
@@ -71,7 +71,7 @@ public class DashboardController implements Initializable {
         // 3. Si el usuario hace clic en "Sí, salir", procedemos con el cierre
         if (resultado.isPresent() && resultado.get() == botonSi) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/login.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/auth/login.fxml"));
                 Parent loginRoot = loader.load();
 
                 // Obtener la ventana actual y guardar su estado

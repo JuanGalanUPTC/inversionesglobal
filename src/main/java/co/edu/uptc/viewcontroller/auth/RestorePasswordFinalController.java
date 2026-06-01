@@ -1,4 +1,4 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.auth;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class RestorePasswordFinalController {
 
     @FXML
     public void backToLogin() throws IOException {
-        App.setRoot("login");
+        App.setRoot("auth/login");
     }
 
     @FXML
@@ -89,7 +89,7 @@ public class RestorePasswordFinalController {
                 if (guardadoExitoso) {
                     System.out.println("✅ Contraseña segura restablecida con éxito para: " + App.emailARestablecer);
                     App.emailARestablecer = null; // Limpiar puente de datos
-                    App.setRoot("restore_passwordSuccess");
+                    App.setRoot("auth/restore_passwordSuccess");
                 } else {
                     mostrarAlerta("No se pudo actualizar la contraseña. Inténtalo de nuevo.");
                 }

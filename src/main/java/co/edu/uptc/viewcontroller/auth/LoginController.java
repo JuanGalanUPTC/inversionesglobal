@@ -1,4 +1,4 @@
-package co.edu.uptc.viewcontroller;
+package co.edu.uptc.viewcontroller.auth;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -118,7 +118,7 @@ public class LoginController implements Initializable {
 
     @FXML
     public void goToRegister() throws IOException {
-        App.setRoot("register");
+        App.setRoot("auth/register");
     }
 
     @FXML
@@ -192,10 +192,10 @@ public class LoginController implements Initializable {
             // 2. 🔀 Enrutamiento inteligente según el Rol
             if (user.getUserRole() == UserRole.ADMIN) {
                 System.out.println("🛡️ Accediendo al Panel de Administración...");
-                App.setRoot("admin_dashboard");
+                App.setRoot("amin/admin_dashboard");
             } else if (user.getUserRole() == UserRole.INVESTOR) {
                 System.out.println("💼 Accediendo al Panel de Inversionista...");
-                App.setRoot("dashboard");
+                App.setRoot("investor/dashboard");
             } 
         } else {
             mostrarAlerta("Correo electrónico o contraseña incorrectos.");
@@ -242,7 +242,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void handleHyperLinkOlvidastePassword() throws IOException {
-        App.setRoot("restore_password");
+        App.setRoot("auth/restore_password");
     }
 
     @FXML

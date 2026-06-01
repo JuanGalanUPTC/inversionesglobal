@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root-container" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.RestorePasswordController">
+<StackPane styleClass="root-container" stylesheets="@../../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.auth.RestorePasswordController">
     <children>
         <HBox alignment="CENTER" spacing="20.0">
             <children>
@@ -20,7 +20,7 @@
                      <graphic>
                         <ImageView fitHeight="51.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/flechaIcon.png" />
+                              <Image url="@../../images/flechaIcon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -39,14 +39,14 @@
                     <children>
                         <ImageView fitHeight="175.0" fitWidth="444.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/idonfilingenimore.png" />
+                                <Image url="@../../images/logotipo.png" />
                             </image>
                         </ImageView>
                   <VBox prefHeight="200.0" prefWidth="100.0" styleClass="success-box" stylesheets="@../css/login.css">
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/successIcon.png" />
+                              <Image url="@../../images/successIcon.png" />
                            </image>
                         </ImageView>
                         <Label styleClass="success-message" text="Tu cuenta de GLOBAL ha sido creada correctamente." wrapText="true" />
@@ -60,7 +60,7 @@
                             <children>
                                 <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../images/warningIcon.png" />
+                                        <Image url="@../../images/warningIcon.png" />
                                     </image>
                                 </ImageView>
                                 <Label fx:id="warningMessage" styleClass="warning-message" text="Por favor, contesta los campos para continuar." />

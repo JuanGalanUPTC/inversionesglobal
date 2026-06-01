@@ -20,7 +20,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Font.loadFont(getClass().getResourceAsStream("/co/edu/uptc/fonts/Roboto-Regular.ttf"), 12);
-        scene = new Scene(loadFXML("login"), 1200, 720);
+        scene = new Scene(loadFXML("auth/login"), 1200, 720);
         stage.setTitle("GLOBAL");
         stage.setScene(scene);
         stage.show();
