@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
+import co.edu.uptc.model.enums.UserRole;
 import co.edu.uptc.service.UserService;
 
 public class LoginController implements Initializable {
@@ -160,17 +161,16 @@ public class LoginController implements Initializable {
         }
     }
 
-@FXML
-    private void handleLogin() {
-        String email = emailField.getText().trim();
+    @FXML
+    private void handleLogin() throws IOException {
+        String email = emailField.getText().trim(); // El correo sí lleva .trim()
 
-        // Si manejas la lógica de contraseña oculta/visible en el login, tomamos el
-        // campo activo
+        // 🔐 Respetamos los espacios exactos de la contraseña para que BCrypt no falle
         String password;
         if (mostrarPasswordCheckBox != null && mostrarPasswordCheckBox.isSelected()) {
-            password = txtPasswordMascarado.getText().trim();
+            password = txtPasswordMascarado.getText(); // 👈 Sin .trim()
         } else {
-            password = passwordField.getText().trim();
+            password = passwordField.getText(); // 👈 Sin .trim()
         }
 
         // 1. Validación básica de campos vacíos en la interfaz
@@ -183,43 +183,29 @@ public class LoginController implements Initializable {
         Optional<User> usuarioAutenticado = userService.authenticate(email, password);
 
         if (usuarioAutenticado.isPresent()) {
-            // --- 🔑 LOGIN EXITOSO ---
             User user = usuarioAutenticado.get();
             System.out.println("✅ ¡Bienvenido! Sesión iniciada para: " + user.getEmail());
-            
-            try {
-                // 1. Cargamos el FXML del Dashboard
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/dashboard.fxml"));
-                Parent dashboardRoot = loader.load();
 
-                // 2. Obtenemos de forma segura la ventana actual usando el campo de texto
-                Stage stage = (Stage) emailField.getScene().getWindow();
+            // 1. Guardamos el usuario de forma global en la App
+            App.setUsuarioLogueado(user);
 
-                // 🌟 EL TRUCO: Guardar el estado de la ventana ANTES de cambiar nada
-                boolean estabaMaximizada = stage.isMaximized();
-
-                // 3. Montamos la nueva escena
-                Scene nuevaEscena = new Scene(dashboardRoot);
-                stage.setScene(nuevaEscena);
-
-                // 4. Restauramos el tamaño correcto (Aquí está la magia para el bug de la esquina)
-                if (estabaMaximizada) {
-                    stage.setMaximized(false); // APAGAMOS un milisegundo
-                    stage.setMaximized(true);  // ENCENDEMOS para forzar la pantalla completa real
-                } else {
-                    stage.centerOnScreen();   // Solo centramos si era una ventana pequeña
-                }
-                
-                stage.show();
-
-            } catch (IOException e) {
-                System.err.println("Error al cargar el dashboard: " + e.getMessage());
-                e.printStackTrace();
-            }
+            // 2. 🔀 Enrutamiento inteligente según el Rol
+            if (user.getUserRole() == UserRole.ADMIN) {
+                System.out.println("🛡️ Accediendo al Panel de Administración...");
+                App.setRoot("admin_dashboard");
+            } else if (user.getUserRole() == UserRole.INVESTOR) {
+                System.out.println("💼 Accediendo al Panel de Inversionista...");
+                App.setRoot("dashboard");
+            } 
         } else {
-            mostrarAlerta("Correo o contraseña incorrectos.");
+            mostrarAlerta("Correo electrónico o contraseña incorrectos.");
+            if (passwordField != null)
+                passwordField.clear();
+            if (txtPasswordMascarado != null)
+                txtPasswordMascarado.clear();
         }
     }
+
     /**
      * Muestra la alerta visual en el warningBox modificando el texto internamente
      */
@@ -267,4 +253,5 @@ public class LoginController implements Initializable {
         // Forzamos la finalización del proceso por si queda algún hilo en segundo plano
         System.exit(0);
     }
+
 }

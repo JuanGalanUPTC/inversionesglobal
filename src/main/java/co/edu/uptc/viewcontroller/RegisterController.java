@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import co.edu.uptc.app.App;
+import co.edu.uptc.model.enums.UserRole;
 import co.edu.uptc.service.UserService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -135,10 +136,12 @@ public class RegisterController implements Initializable {
     private void handleRegister() throws IOException {
         String email = emailField.getText().trim();
 
-        // Si el password está visible (mascarado), tomamos ese valor
-        String password = mostrarPasswordCheckBox.isSelected() ? txtPasswordMascarado.getText().trim()
-                : passwordField.getText().trim();
-        String confirmPassword = passwordField1.getText().trim();
+        // 🔐 Respetamos los espacios exactos de las contraseñas para BCrypt (sin
+        // .trim())
+        String password = mostrarPasswordCheckBox.isSelected() ? txtPasswordMascarado.getText()
+                : passwordField.getText();
+        String confirmPassword = passwordField1.getText();
+
         String ciudadNacimiento = emailField1.getText().trim();
 
         // 1. Validar que absolutamente ningún campo esté vacío
@@ -174,19 +177,22 @@ public class RegisterController implements Initializable {
         }
 
         try {
-            // Enviar al servicio de persistencia
-            userService.registerUser(email, password, ciudadNacimiento);
+            // 🚀 Enviamos al nuevo método del servicio usando el Enum 'Role'
+            // NOTA: Si este formulario es de registro público, por defecto los registras
+            // como INVESTOR o APPLICANT
+            userService.registerUser(email, password, ciudadNacimiento, UserRole.INVESTOR);
 
             // --- REGISTRO EXITOSO ---
-            System.out.println("✅ ¡Usuario guardado con éxito en user.json!");
+            System.out.println("✅ ¡Usuario guardado con éxito en user.json con rol INVESTOR!");
             limpiarCampos();
             goToRegisterSuccess();
 
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().equals("USERNAME_ALREADY_TAKEN")) {
+            // 🔄 Ajustamos al mensaje de error real que lanza tu nuevo UserService
+            if ("EMAIL_ALREADY_EXISTS".equals(e.getMessage())) {
                 mostrarAlerta("Este correo electrónico ya se encuentra registrado.");
             } else {
-                mostrarAlerta("Por favor, completa todos los campos obligatorios.");
+                mostrarAlerta("Por favor, completa todos los campos obligatorios de forma correcta.");
             }
         } catch (RuntimeException e) {
             mostrarAlerta("Error crítico al guardar en el archivo JSON.");
@@ -239,6 +245,5 @@ public class RegisterController implements Initializable {
     public void backToLogin() throws IOException {
         App.setRoot("register_succes");
     }
-    
-    
+
 }
