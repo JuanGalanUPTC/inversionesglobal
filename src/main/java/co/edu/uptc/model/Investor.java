@@ -76,6 +76,11 @@ public class Investor {
         return availableCapital;
     }
 
+    /** @return capital disponible (Alias para compatibilidad con TableView). */
+    public double getBalance() {
+        return availableCapital;
+    }
+
     /** @param availableCapital nuevo capital disponible. */
     public void setAvailableCapital(double availableCapital) {
         this.availableCapital = availableCapital;

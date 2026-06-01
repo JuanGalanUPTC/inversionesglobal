@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" styleClass="content-area" stylesheets="@../../css/dashboard.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.admin.GestionarInversionistasController">
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label text="Gestión de Inversionistas" styleClass="header-title" style="-fx-font-size: 24px;"/>
+        <Region HBox.hgrow="ALWAYS" />
+        <TextField fx:id="txtBusqueda" promptText="Buscar por nombre o gmail..." styleClass="text-input-field" prefWidth="250" style="-fx-font-size: 14px;"/>
+        <ComboBox fx:id="comboFiltroActivo" promptText="Filtrar por inversión" styleClass="combo-idioma" prefWidth="200"/>
+    </HBox>
+
+    <TableView fx:id="tablaInversionistas" VBox.vgrow="ALWAYS" styleClass="card">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Nombre Completo" prefWidth="200" />
+            <TableColumn fx:id="colGmail" text="Gmail (Correo)" prefWidth="250" />
+            <TableColumn fx:id="colCapital" text="Capital Total" prefWidth="150" />
+            <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="150" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+</VBox>
