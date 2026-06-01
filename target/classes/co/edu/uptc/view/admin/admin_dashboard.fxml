@@ -1,0 +1,2 @@
+<?import javafx.scene.control.Label?>
+<Label text="Estas en el dashboard de admin" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.admin.AdminDashboardController"></Label>
