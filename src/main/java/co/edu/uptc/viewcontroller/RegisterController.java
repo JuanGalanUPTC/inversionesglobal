@@ -180,7 +180,7 @@ public class RegisterController implements Initializable {
             // --- REGISTRO EXITOSO ---
             System.out.println("✅ ¡Usuario guardado con éxito en user.json!");
             limpiarCampos();
-            backToLogin();
+            goToRegisterSuccess();
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().equals("USERNAME_ALREADY_TAKEN")) {
@@ -231,8 +231,13 @@ public class RegisterController implements Initializable {
     }
 
     @FXML
+    public void goToRegisterSuccess() throws IOException {
+        App.setRoot("register_succes");
+    }
+
+    @FXML
     public void backToLogin() throws IOException {
-        App.setRoot("login");
+        App.setRoot("register_succes");
     }
     
     
