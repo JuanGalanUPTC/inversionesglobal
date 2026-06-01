@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Region?>
+
 <BorderPane fx:id="mainBorderPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.DashboardController">
     <left>
-        <VBox fx:id="sidebar">
+        <VBox fx:id="sidebar" spacing="10.0" prefWidth="255.0">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+            
             <Button text="Mis Inversiones" onAction="#mostrarMisInversiones" maxWidth="Infinity"/>
             <Button text="Reportes" onAction="#mostrarReportes" maxWidth="Infinity"/>
             <Button text="Activos" onAction="#mostrarActivos" maxWidth="Infinity"/>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <VBox spacing="15.0" alignment="BOTTOM_CENTER">
+                <Button fx:id="btnCerrarSesion" 
+                        text="Cerrar Sesión" 
+                        onAction="#handleCerrarSesion" 
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="20"/>
+                    </padding>
+                </Button>
+                
+                <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" prefHeight="40.0" maxWidth="Infinity" promptText="Cambiar idioma" styleClass="combo-idioma" visibleRowCount="2">
+                </ComboBox>
+            </VBox>
         </VBox>
     </left>
+    
     <center>
         <StackPane fx:id="contentArea">
             <ImageView fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                <Image url="@\co\edu\uptc\images\logohor.png" />
+                    <Image url="@/co/edu/uptc/images/logohor.png" />
                 </image>
             </ImageView>
-</StackPane>
+        </StackPane>
     </center>
 </BorderPane>
