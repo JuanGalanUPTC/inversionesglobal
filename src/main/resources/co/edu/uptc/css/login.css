@@ -24,6 +24,49 @@
     -fx-font-size: 14px;
 }
 
+/* Contenedor principal de la alerta de éxito (VBox) */
+.success-box {
+    -fx-background-color: #2e965b; /* Verde base del fondo */
+    -fx-background-radius: 30px;   /* Bordes muy redondeados como la imagen */
+    -fx-padding: 40px;
+    -fx-alignment: center;
+    -fx-spacing: 25px;
+    -fx-max-width: 450px;
+    -fx-max-height: 380px;
+}
+
+/* Texto informativo (Label) */
+.success-message {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* Botón "IR A INICIO DE SESIÓN" */
+.btn-success-action {
+    -fx-background-color: #63d397; /* Verde más claro para el botón */
+    -fx-background-radius: 40px;   /* Bordes completamente ovalados */
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: 900;          /* Texto bien grueso */
+    -fx-cursor: hand;
+    -fx-padding: 12px 40px;
+    
+    /* Sombra paralela idéntica a la de tu diseño */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+}
+
+/* Efecto Hover para el botón (Cambio sutil al pasar el mouse) */
+.btn-success-action:hover {
+    -fx-background-color: #52c286;
+}
+
+
 /* Fuerza al menú desplegable del ComboBox a posicionarse arriba del botón */
 .combo-idioma {
     -fx-background-color: rgba(60, 64, 67);

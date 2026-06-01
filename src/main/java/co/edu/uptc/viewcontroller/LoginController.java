@@ -31,7 +31,7 @@ import co.edu.uptc.model.User;
 import co.edu.uptc.service.UserService;
 
 public class LoginController implements Initializable {
-    UserService userService=new UserService();
+    UserService userService = new UserService();
 
     @FXML
     private ComboBox<String> idiomaComboBox;
@@ -226,7 +226,8 @@ try {
             return;
         }
 
-        // Buscamos el Label interno de tu VBox de manera dinámica para cambiarle el texto
+        // Buscamos el Label interno de tu VBox de manera dinámica para cambiarle el
+        // texto
         Label lblMensaje = (Label) warningBox.getChildren().stream()
                 .filter(node -> node instanceof Label)
                 .findFirst()
@@ -250,7 +251,16 @@ try {
     }
 
     @FXML
-    private void handleHyperLinkOlvidastePassword()throws IOException{
+    private void handleHyperLinkOlvidastePassword() throws IOException {
         App.setRoot("restore_password");
+    }
+
+    @FXML
+    private void handleExit() {
+        // Cerramos el programa de forma limpia liberando los recursos de JavaFX
+        javafx.application.Platform.exit();
+
+        // Forzamos la finalización del proceso por si queda algún hilo en segundo plano
+        System.exit(0);
     }
 }

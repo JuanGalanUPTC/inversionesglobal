@@ -21,7 +21,7 @@
             
             <VBox alignment="TOP_LEFT" maxWidth="320.0" prefWidth="300.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="exit-button" text="Salir">
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="exit-button" onAction="#handleExit" text="Salir">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
