@@ -1,0 +1,47 @@
+[
+  {
+    "email": "julian@gmail.com",
+    "password": "asdfgaaaaQ3A$",
+    "ciudadNacimiento": "duitama",
+    "userRole": "INVESTOR"
+  },
+  {
+    "email": "carlos@gmail.com",
+    "password": "$2a$10$9vlEX7AVUHYxLpFLbJs9KOFH6qdyCHW8rStUXtu9J.1mUZZpB.FiC",
+    "ciudadNacimiento": "yopal",
+    "userRole": "INVESTOR"
+  },
+  {
+    "email": "juanda@gmail.com",
+    "password": "$2a$10$HvjBetIigkTFUBTKxVGU0uj19F.nH88hsgGMphhr0GSs1sB8EhDQ6",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR"
+  },
+  {
+    "id": "admin-id-001",
+    "email": "admin.global@inversiones.com",
+    "password": "$2a$10$mC3B2v6K1wMhXb7UvY8Zfe7gKx9vEwR3qV5z1A2b3c4d5e6f7g8hi",
+    "ciudadNacimiento": "Tunja",
+    "userRole": "ADMIN"
+  },
+  {
+    "id": "admin-id-002",
+    "email": "soporte.admin@inversiones.com",
+    "password": "$2a$10$mC3B2v6K1wMhXb7UvY8Zfe7gKx9vEwR3qV5z1A2b3c4d5e6f7g8hi",
+    "ciudadNacimiento": "Sogamoso",
+    "userRole": "ADMIN"
+  },
+  {
+    "id": "admin-id-003",
+    "email": "auditor.admin@inversiones.com",
+    "password": "$2a$10$y0vNjHs6l5mfHsEY7uXlw.xyseNw1CIWad5qBsPEjMlYR.HHWvhsa",
+    "ciudadNacimiento": "Duitama",
+    "userRole": "ADMIN"
+  },
+  {
+    "email": "axel@gmail.com",
+    "password": "$2a$10$gpBD76lrUPymfQSiXdg/tuWyPi/OkEhIQmdXC8b4vTE7LohKsfVeq",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR"
+  }
+]
