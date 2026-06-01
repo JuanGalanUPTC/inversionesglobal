@@ -192,7 +192,7 @@ public class LoginController implements Initializable {
             // 2. 🔀 Enrutamiento inteligente según el Rol
             if (user.getUserRole() == UserRole.ADMIN) {
                 System.out.println("🛡️ Accediendo al Panel de Administración...");
-                App.setRoot("amin/admin_dashboard");
+                App.setRoot("admin/admin_dashboard");
             } else if (user.getUserRole() == UserRole.INVESTOR) {
                 System.out.println("💼 Accediendo al Panel de Inversionista...");
                 App.setRoot("investor/dashboard");

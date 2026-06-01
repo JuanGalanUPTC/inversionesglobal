@@ -18,13 +18,6 @@
     "userRole": "INVESTOR"
   },
   {
-    "id": "admin-id-001",
-    "email": "admin.global@inversiones.com",
-    "password": "$2a$10$mC3B2v6K1wMhXb7UvY8Zfe7gKx9vEwR3qV5z1A2b3c4d5e6f7g8hi",
-    "ciudadNacimiento": "Tunja",
-    "userRole": "ADMIN"
-  },
-  {
     "id": "admin-id-002",
     "email": "soporte.admin@inversiones.com",
     "password": "$2a$10$mC3B2v6K1wMhXb7UvY8Zfe7gKx9vEwR3qV5z1A2b3c4d5e6f7g8hi",
@@ -108,10 +101,17 @@
     "profileImagePath": "images\\1780332799527_Doc1-page-00001.jpg"
   },
   {
-    "email": "JuanditaTenjo@gmail.com",
-    "password": "$2a$10$0Sfcgcr3RCrXjb/hCP0biupisyNcjLHy.UpVZu9E1HZcxRLeItBi.",
-    "ciudadNacimiento": "soga",
+    "email": "juanestebangalan@gmail.com",
+    "password": "$2a$10$Rwjh0wkboTFNQPK0cPlqUexAljwOAABtsghtFoOaKqRax/t82b9X6",
+    "ciudadNacimiento": "Yopal",
     "userRole": "INVESTOR",
     "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "id": "admin-id-001",
+    "email": "admin.global@inversiones.com",
+    "password": "$2a$10$p1wTnS/mrzRjdCEDOfF3WuXqgqcXAA3Ry0pUTI3nlKriemqjrt..u",
+    "ciudadNacimiento": "Tunja",
+    "userRole": "ADMIN"
   }
 ]

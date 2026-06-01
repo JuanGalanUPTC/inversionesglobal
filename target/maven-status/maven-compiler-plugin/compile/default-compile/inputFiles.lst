@@ -7,8 +7,10 @@ C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\UserService.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\LoginController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\Investment.java
+C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\GestionarInversionistasController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\InvestmentService.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordController.java
+C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\ActivosController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\PortfolioService.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\AdminDashboardController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\OperationCancelledException.java
@@ -18,8 +20,10 @@ C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\InsufficientCapitalException.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\IncompatibleRiskProfileException.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\app\App.java
+C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\CustomizeController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\enums\RiskProfile.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\persistence\JsonRepository.java
+C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\DetalleInversionController.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\enums\AssetType.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\AssetService.java
 C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\util\AppConfig.java

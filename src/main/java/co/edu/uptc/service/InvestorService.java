@@ -175,6 +175,24 @@ public class InvestorService {
     }
 
     /**
+     * Elimina un inversionista buscando por su correo electrónico.
+     *
+     * @param email correo del inversionista a eliminar
+     * @return true si se eliminó, false si no se encontró
+     */
+    public boolean deleteInvestor(String email) {
+        if (email == null) return false;
+        String target = email.trim();
+        
+        boolean exists = repo.findBy(inv -> inv.getEmail().equalsIgnoreCase(target)).isPresent();
+        if (exists) {
+            repo.deleteBy(inv -> inv.getEmail().equalsIgnoreCase(target));
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Modifica el capital disponible restando o sumando el costo de las transacciones operacionales.
      */
     public void updateCapital(String id, double purchaseValue) {

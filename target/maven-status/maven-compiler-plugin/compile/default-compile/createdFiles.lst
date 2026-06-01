@@ -1,5 +1,6 @@
 co\edu\uptc\viewcontroller\auth\ProfileImageController$1.class
 co\edu\uptc\model\Investor.class
+co\edu\uptc\viewcontroller\admin\GestionarInversionistasController.class
 co\edu\uptc\service\InvestmentService$1.class
 co\edu\uptc\viewcontroller\auth\LoginController.class
 co\edu\uptc\service\InvestorService.class
@@ -10,14 +11,17 @@ co\edu\uptc\viewcontroller\auth\RestorePasswordSecurityQuestionController.class
 co\edu\uptc\persistence\JsonRepository.class
 co\edu\uptc\viewcontroller\investor\DashboardController$1.class
 co\edu\uptc\viewcontroller\auth\ProfileImageController.class
+co\edu\uptc\viewcontroller\admin\GestionarInversionistasController$1.class
 co\edu\uptc\viewcontroller\auth\RestorePasswordController.class
 co\edu\uptc\util\AppConfig.class
 co\edu\uptc\model\Asset.class
 co\edu\uptc\viewcontroller\investor\DashboardController.class
 co\edu\uptc\exception\IncompatibleRiskProfileException.class
+co\edu\uptc\viewcontroller\admin\AdminDashboardController$1.class
 co\edu\uptc\service\PortfolioService.class
 co\edu\uptc\app\App.class
 co\edu\uptc\viewcontroller\admin\AdminDashboardController.class
+co\edu\uptc\viewcontroller\admin\GestionarInversionistasController$2.class
 co\edu\uptc\exception\InvestorNotFoundException.class
 co\edu\uptc\model\enums\UserRole.class
 co\edu\uptc\util\AppConfig$CurrencyMode.class

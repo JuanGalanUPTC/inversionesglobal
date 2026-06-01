@@ -76,6 +76,14 @@ public class AssetService {
     }
 
     /**
+     * Devuelve todos los activos almacenados. 
+     * Alias de listAssets() usado por el controlador de administración.
+     */
+    public List<Asset> findAll() {
+        return listAssets();
+    }
+
+    /**
      * Consulta activos filtrando por tipo (Acción, Bono, ETF).
      */
     public List<Asset> findByType(AssetType t) {

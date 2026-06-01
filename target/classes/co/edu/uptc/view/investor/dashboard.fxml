@@ -31,7 +31,7 @@
                </ImageView>
                <VBox prefHeight="84.0" prefWidth="119.0">
                   <children>
-                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize">
+                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize" onAction="#handleCustomizeButton">
                         <graphic>
                            <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
                               <image>

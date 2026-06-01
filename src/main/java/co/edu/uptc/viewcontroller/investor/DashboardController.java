@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -30,10 +31,12 @@ import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
 
 public class DashboardController implements Initializable {
-
+    // Guarda la instancia activa del Dashboard para acceso global
+    private static DashboardController instanciaGlobal;
     // Inyectamos el contenedor principal
     @FXML
     private VBox warningBox;
+
     @FXML
     private ComboBox<String> idiomaComboBox;
     @FXML
@@ -48,6 +51,8 @@ public class DashboardController implements Initializable {
     private Label rolLabel;
     @FXML
     private ImageView avatarImageView;
+    @FXML
+    private StackPane contentArea;
 
     @FXML
     private void mostrarMisInversiones() {
@@ -61,7 +66,21 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void mostrarActivos() {
-        cambiarCentro("/co/edu/uptc/view/investor/activosView.fxml");
+        cambiarCentro("/co/edu/uptc/view/investor/activos.fxml");
+    }
+
+    @FXML
+    public void handleCustomizeButton() throws IOException {
+        cambiarCentro("/co/edu/uptc/view/investor/customize.fxml");
+    }
+
+    /**
+     * MÉTODOS ESTÁTICOS DE NAVEGACIÓN GLOBAL
+     * Permiten cambiar el contenido de la derecha de forma segura desde
+     * subcontroladores
+     */
+    public static DashboardController getInstancia() {
+        return instanciaGlobal;
     }
 
     @FXML
@@ -129,16 +148,13 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Agregar los identificadores de los idiomas
+        // 🎯 FIJAR LA INSTANCIA GLOBAL
+        instanciaGlobal = this;
+
+        // 1. Configurar ComboBox de idiomas (se mantiene igual...)
         idiomaComboBox.getItems().addAll("es", "en");
-
-        // 2. Definir cómo se verán los elementos en la lista desplegable
         idiomaComboBox.setCellFactory(param -> createCustomCell());
-
-        // 3. Definir cómo se verá el elemento SELECCIONADO en el botón principal
         idiomaComboBox.setButtonCell(createCustomCell());
-
-        // Seleccionar el primero por defecto
         idiomaComboBox.getSelectionModel().selectFirst();
 
         if (warningBox != null) {
@@ -146,54 +162,56 @@ public class DashboardController implements Initializable {
             warningBox.setManaged(false);
         }
 
+        // 2. OBTENER USUARIO Y CONFIGURAR LA BARRA LATERAL
         User usuarioLogueado = App.getUsuarioLogueado();
 
-        if (usuarioLogueado.getProfileImagePath() != null) {
-            try {
-                String rutaImagen = usuarioLogueado.getProfileImagePath();
-                Image avatar;
+        if (usuarioLogueado != null) {
+            // ✨ LA PIEZA FALTANTE: Actualizar los textos de la barra izquierda
+            if (nombreLabel != null) {
+                nombreLabel.setText(usuarioLogueado.getEmail()); // O .getUsername() según corresponda
+            }
+            if (rolLabel != null) {
+                rolLabel.setText("Inversionista"); // O usuarioLogueado.getRol() si es dinámico
+            }
 
-                if (rutaImagen.startsWith("/")) {
-                    // 📦 Caso A: Es la foto por defecto
-                    java.io.InputStream stream = getClass().getResourceAsStream(rutaImagen);
-                    if (stream == null) {
-                        throw new java.io.FileNotFoundException("No se encontró el recurso interno: " + rutaImagen);
-                    }
-                    avatar = new Image(stream);
-                } else {
-                    // 📁 Caso B: Es una imagen personalizada en el disco
-                    java.io.File file = new java.io.File(rutaImagen);
-                    if (file.exists()) {
-                        avatar = new Image(file.toURI().toString());
+            // 3. Renderizar la imagen del avatar (Tu lógica existente...)
+            if (usuarioLogueado.getProfileImagePath() != null) {
+                try {
+                    String rutaImagen = usuarioLogueado.getProfileImagePath();
+                    Image avatar;
+
+                    if (rutaImagen.startsWith("/")) {
+                        java.io.InputStream stream = getClass().getResourceAsStream(rutaImagen);
+                        if (stream == null) {
+                            throw new java.io.FileNotFoundException("No se encontró recurso: " + rutaImagen);
+                        }
+                        avatar = new Image(stream);
                     } else {
-                        avatar = new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
+                        java.io.File file = new java.io.File(rutaImagen);
+                        if (file.exists()) {
+                            avatar = new Image(file.toURI().toString());
+                        } else {
+                            avatar = new Image(
+                                    getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
+                        }
                     }
+
+                    avatarImageView.setImage(avatar);
+
+                    double ancho = 80;
+                    double alto = 80;
+                    avatarImageView.setFitWidth(ancho);
+                    avatarImageView.setFitHeight(alto);
+                    avatarImageView.setPreserveRatio(false);
+
+                    javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle(ancho / 2, alto / 2, ancho / 2);
+                    avatarImageView.setClip(clip);
+
+                } catch (Exception e) {
+                    System.err.println("❌ Error al renderizar el avatar: " + e.getMessage());
+                    avatarImageView.setImage(
+                            new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg")));
                 }
-
-                avatarImageView.setImage(avatar);
-
-                // 🎯 ¡AQUÍ ESTÁ EL TRUCO DEL CÍRCULO!
-                // 1. Forzamos un tamaño fijo al ImageView si no lo tiene en el FXML (ej: 80x80)
-                double ancho = 80;
-                double alto = 80;
-                avatarImageView.setFitWidth(ancho);
-                avatarImageView.setFitHeight(alto);
-                avatarImageView.setPreserveRatio(false); // Para que se adapte obligatoriamente al círculo
-
-                // 2. Creamos una máscara geométrica circular posicionada en el centro del
-                // ImageView
-                javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle();
-                clip.setCenterX(ancho / 2); // Centro X (40)
-                clip.setCenterY(alto / 2); // Centro Y (40)
-                clip.setRadius(ancho / 2); // Radio del círculo (40)
-
-                // 3. Le aplicamos la máscara al visor de imágenes
-                avatarImageView.setClip(clip);
-
-            } catch (Exception e) {
-                System.err.println("❌ Error al renderizar el avatar: " + e.getMessage());
-                avatarImageView
-                        .setImage(new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg")));
             }
         }
     }
@@ -243,4 +261,17 @@ public class DashboardController implements Initializable {
             }
         };
     }
+
+    /**
+     * 🎯 MÉTODO REFACTORIZADO: Ahora apunta directo al contenedor real de la UI
+     * que es el mainBorderPane, garantizando que reemplace la vista central.
+     */
+    public void setVistaCentral(Parent nodoVista) {
+        if (mainBorderPane != null) {
+            mainBorderPane.setCenter(nodoVista);
+        } else {
+            System.err.println("❌ Error: mainBorderPane no está inyectado correctamente desde el FXML.");
+        }
+    }
+
 }

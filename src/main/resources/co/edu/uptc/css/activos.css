@@ -1,0 +1,78 @@
+/* --- TEMA OSCURO (Adaptado a tus clases actuales del FXML) --- */
+
+/* Quitar el fondo blanco por defecto del ScrollPane y sus bordes */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Fondo principal oscuro */
+.main-bg {
+    -fx-background-color: #0b0f19; 
+}
+
+/* Título principal */
+.title-text {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    -fx-background-color: #1e2330; 
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #7a8295;
+    -fx-border-color: #2a3040;
+    -fx-border-radius: 8px;
+}
+.search-bar:focused {
+    -fx-border-color: #4a5568;
+}
+
+/* Botón activo (Gris claro/blanco para resaltar) */
+.btn-filter-active {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+
+/* Botones inactivos (Fondo oscuro, texto gris) */
+.btn-filter {
+    -fx-background-color: #1e2330;
+    -fx-text-fill: #7a8295;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+.btn-filter:hover {
+    -fx-background-color: #2a3040;
+    -fx-text-fill: #ffffff;
+}
+
+/* Títulos de las columnas */
+.header-text {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7a8295;
+}
+
+/* Línea separadora (aunque la clase se llame white-separator, la pintamos del color oscuro del panel) */
+.white-separator {
+    -fx-background-color: transparent;
+    -fx-border-color: #1e2330 transparent transparent transparent;
+    -fx-border-width: 2px 0 0 0;
+    -fx-padding: 10px 0 5px 0;
+}
