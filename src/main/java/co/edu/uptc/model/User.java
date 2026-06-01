@@ -8,12 +8,14 @@ public class User {
     private String password;
     private String ciudadNacimiento;
     private UserRole userRole;
+    private String profileImagePath;
 
-    public User(String id, String email, String password, String ciudadNacimiento, UserRole userRole) {
+    public User(String id, String email, String password, String ciudadNacimiento, UserRole userRole, String profileImagePath) {
         this.email = email;
         this.password = password;
         this.ciudadNacimiento = ciudadNacimiento;
         this.userRole = userRole;
+        this.profileImagePath=profileImagePath;
     }
 
     // Getters y Setters (Obligatorios para que Gson los procese)
@@ -57,6 +59,16 @@ public class User {
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    
 
     
 }

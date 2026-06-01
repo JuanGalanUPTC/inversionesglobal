@@ -1,7 +1,12 @@
 package co.edu.uptc.viewcontroller.auth;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 import co.edu.uptc.app.App;
@@ -9,8 +14,10 @@ import co.edu.uptc.model.enums.UserRole;
 import co.edu.uptc.service.UserService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -21,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 public class RegisterController implements Initializable {
@@ -177,25 +185,38 @@ public class RegisterController implements Initializable {
         }
 
         try {
-            // 🚀 Enviamos al nuevo método del servicio usando el Enum 'Role'
-            // NOTA: Si este formulario es de registro público, por defecto los registras
-            // como INVESTOR o APPLICANT
-            userService.registerUser(email, password, ciudadNacimiento, UserRole.INVESTOR);
+            // 🔄 1. Cargamos el FXML de la foto de perfil usando FXMLLoader
+            // NOTA: Ajusta la ruta exacta si tu archivo fxml se llama diferente o está en
+            // otra carpeta
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/co/edu/uptc/view/auth/register_profileImage.fxml"));
+            javafx.scene.Parent root = loader.load();
 
-            // --- REGISTRO EXITOSO ---
-            System.out.println("✅ ¡Usuario guardado con éxito en user.json con rol INVESTOR!");
-            limpiarCampos();
-            goToRegisterSuccess();
+            // 📥 2. Obtenemos el controlador de la pantalla de la foto
+            ProfileImageController photoController = loader.getController();
 
+            // 🚀 3. PASAMOS LOS DATOS: Inyectamos el email, password y ciudad recolectados
+            photoController.cargarDatosTemporales(email, password, ciudadNacimiento);
+
+            // 🔀 4. Cambiamos la escena en la ventana actual
+            javafx.stage.Stage stage = (javafx.stage.Stage) emailField.getScene().getWindow();
+            stage.getScene().setRoot(root);
+
+            System.out.println(
+                    "🔄 Formulario base validado correctamente. Datos transferidos a la pantalla de foto de perfil.");
+
+        } catch (IOException e) {
+            mostrarAlerta("Error al cambiar a la pantalla de foto de perfil.");
+            e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            // 🔄 Ajustamos al mensaje de error real que lanza tu nuevo UserService
+            // 🔄 Mantenemos tu control de correos duplicados intacto
             if ("EMAIL_ALREADY_EXISTS".equals(e.getMessage())) {
                 mostrarAlerta("Este correo electrónico ya se encuentra registrado.");
             } else {
                 mostrarAlerta("Por favor, completa todos los campos obligatorios de forma correcta.");
             }
         } catch (RuntimeException e) {
-            mostrarAlerta("Error crítico al guardar en el archivo JSON.");
+            mostrarAlerta("Error crítico en el sistema.");
             e.printStackTrace();
         }
     }
@@ -239,6 +260,11 @@ public class RegisterController implements Initializable {
     @FXML
     public void goToRegisterSuccess() throws IOException {
         App.setRoot("auth/register_succes");
+    }
+
+    @FXML
+    public void goToProfileImage() throws IOException {
+        App.setRoot("auth/register_proflieImage");
     }
 
     @FXML

@@ -43,5 +43,68 @@
     "password": "$2a$10$gpBD76lrUPymfQSiXdg/tuWyPi/OkEhIQmdXC8b4vTE7LohKsfVeq",
     "ciudadNacimiento": "sogamoso",
     "userRole": "INVESTOR"
+  },
+  {
+    "email": "juandavid@gmail.com",
+    "password": "$2a$10$zRmNOH/WN3SlBTX71C3O7.IBLd8PP.DZTIvMXU2cflrPePsx/1pZG",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "tenjo@gmail.com",
+    "password": "$2a$10$vUmc/sfsvaDVbwRdi6kDSOi/9de4ZO8grfsOdvoFGAyB0fnHOYVHG",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "juandaf@gmail.com",
+    "password": "$2a$10$BFhTIsJcGmB0ZPt6NLZ0qOuupSSBPL1Fm1VWlW46IkgxYeSkeZCZO",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "juanfa@gmail.com",
+    "password": "$2a$10$WkFRvzzAC8CTdVw1MdW6JO.i5Mt5IMcL9k6KG.rmqZwq72pASQP2e",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "elpepe@gmail.com",
+    "password": "$2a$10$VKm5WKfeaKsJpR14XNgLie2QGRRXge7yrGPY.MiGj9asfxFWmjn2S",
+    "ciudadNacimiento": "soga",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "TengoJuan@gmail.com",
+    "password": "$2a$10$tY05unaH6wcuPhxXeRd6Tes3OsZxVIkn.pCIo5tDTaJz5tXrm0OVy",
+    "ciudadNacimiento": "Duitama",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "JuanTenjo@gmail.com",
+    "password": "$2a$10$VyfISLlla8oFOKadsxCqCu6tudd9TSbzvI2q3U5ypXA3biZWZ5PWi",
+    "ciudadNacimiento": "duitama",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "JuanTenjo33@gmail.com",
+    "password": "$2a$10$uUDyAplVrVoYOe19cmRtbOtLvWyHeNdfD54whVlxZ0AnexQp33c/.",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+  },
+  {
+    "email": "juanitoTenjo@gmail.com",
+    "password": "$2a$10$iT/AfdCGV0Tnv68XMaXzQuqhIj6/fMzMwZTFGJe.adgi37KBZF822",
+    "ciudadNacimiento": "duitama",
+    "userRole": "INVESTOR",
+    "profileImagePath": "images\\1780332799527_Doc1-page-00001.jpg"
   }
 ]

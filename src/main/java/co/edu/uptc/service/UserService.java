@@ -9,7 +9,7 @@ import co.edu.uptc.security.PasswordEncoder;
 import com.google.gson.reflect.TypeToken;
 
 import co.edu.uptc.model.User;
-import co.edu.uptc.model.enums.UserRole; // 👈 Importamos tu nuevo Enum de Roles
+import co.edu.uptc.model.enums.UserRole;
 import co.edu.uptc.persistence.JsonRepository;
 
 public class UserService {
@@ -21,7 +21,6 @@ public class UserService {
     public UserService() {
         Type type = new TypeToken<List<User>>() {
         }.getType();
-        // Usamos '/' universales para evitar problemas de compatibilidad entre sistemas operativos
         this.userRepo = new JsonRepository<>("src/main/resources/data/user.json", type);
     }
 
@@ -34,51 +33,55 @@ public class UserService {
 
     /**
      * Valida si las credenciales coinciden para iniciar sesión usando BCrypt.
-     * @return El usuario autenticado si es exitoso, o un Optional vacío si falla.
      */
     public Optional<User> authenticate(String email, String password) {
         if (email == null || password == null || email.isBlank() || password.isBlank()) {
             return Optional.empty();
         }
 
-        // 1. Buscamos primero al usuario únicamente por su correo electrónico
         Optional<User> userOpt = userRepo.findBy(user -> user.getEmail().equalsIgnoreCase(email.trim()));
 
-        // 2. Si el usuario existe, validamos su contraseña con el PasswordEncoder
         if (userOpt.isPresent()) {
             User user = userOpt.get();
 
-            //Comparamos de forma segura el texto plano contra el hash del JSON
             if (co.edu.uptc.security.PasswordEncoder.matches(password, user.getPassword())) {
-                return Optional.of(user); // ¡Éxito! Las contraseñas coinciden (el objeto ya incluye su Role)
+                return Optional.of(user);
             }
         }
 
-        // Si no se encuentra el correo o la contraseña no coincide, retornamos vacío
         return Optional.empty();
     }
 
     /**
-     * Registra un nuevo usuario en el sistema incluyendo su Rol del sistema.
+     * Registra un nuevo usuario en el sistema recibiendo la ruta de su imagen de
+     * perfil inicial.
      */
-    public void registerUser(String email, String password, String respuestaSeguridad, UserRole role) {
+    public void registerUser(String email, String password, String respuestaSeguridad, UserRole role,
+            String imagePath) {
         if (email == null || email.isBlank() || password == null || password.isBlank() || respuestaSeguridad == null
-                || respuestaSeguridad.isBlank() || role == null) {
-            throw new IllegalArgumentException("CREDENTIALS_AND_ROLE_CANNOT_BE_EMPTY");
+                || respuestaSeguridad.isBlank() || role == null || imagePath == null || imagePath.isBlank()) {
+            throw new IllegalArgumentException("CREDENTIALS_ROLE_AND_IMAGE_CANNOT_BE_EMPTY");
         }
 
         String cleanedEmail = email.trim();
         String cleanedRespuesta = respuestaSeguridad.trim();
         String passwordCrypt = PasswordEncoder.encode(password);
-        
-        // Validar si el correo ya está registrado en el JSON
+
         if (verifyEmailExists(cleanedEmail)) {
             throw new IllegalArgumentException("EMAIL_ALREADY_EXISTS");
         }
 
         try {
-            // 🛠️ Instancia de User actualizada con el nuevo parámetro 'role'
-            User newUser = new User(UUID.randomUUID().toString(), cleanedEmail, passwordCrypt, cleanedRespuesta, role);
+            // 🛠️ Instancia construida dinámicamente con el 'imagePath' inyectado del
+            // controlador
+            User newUser = new User(
+                    UUID.randomUUID().toString(),
+                    cleanedEmail,
+                    passwordCrypt,
+                    cleanedRespuesta,
+                    role,
+                    imagePath.trim());
+
             userRepo.save(newUser);
         } catch (RuntimeException e) {
             throw new RuntimeException("Error trying to save the user credentials.", e);
@@ -86,7 +89,7 @@ public class UserService {
     }
 
     /**
-     * Sobrecarga de registro que acepta un objeto User directo (Útil para controladores avanzados).
+     * Sobrecarga de registro que acepta un objeto User directo.
      */
     public boolean registerUser(User nuevoUsuario) {
         if (nuevoUsuario == null || verifyEmailExists(nuevoUsuario.getEmail())) {
@@ -106,10 +109,8 @@ public class UserService {
         }
         try {
             String cleanedCorreo = correo.trim();
-            // 🛡️ Protegido contra nulos (user.getEmail() != null) para evitar el NullPointerException
             return userRepo.findBy(user -> user.getEmail() != null && user.getEmail().equalsIgnoreCase(cleanedCorreo))
                     .isPresent();
-
         } catch (Exception e) {
             throw new RuntimeException("Error al consultar la persistencia de usuarios.", e);
         }
@@ -122,33 +123,25 @@ public class UserService {
         try {
             String cleanedAnswer = answer.trim();
 
-            // Buscamos en el repositorio al usuario que tenga el MISMO email que userParam
             return userRepo
                     .findBy(user -> user.getEmail() != null && user.getEmail().equalsIgnoreCase(userParam.getEmail()))
                     .map(userEncontrado -> {
-                        // Si encontramos al usuario, verificamos si su ciudad de nacimiento coincide
                         String ciudadReg = userEncontrado.getCiudadNacimiento();
                         return ciudadReg != null && ciudadReg.trim().equalsIgnoreCase(cleanedAnswer);
                     })
-                    .orElse(false); // Si no se encuentra el usuario, retorna false
+                    .orElse(false);
 
         } catch (Exception e) {
             throw new RuntimeException("Error al consultar la persistencia de usuarios.", e);
         }
     }
 
-    /**
-     * Busca un usuario en la persistencia utilizando su correo electrónico
-     * * @param email Correo electrónico a buscar
-     * @return Un Optional que contiene al Usuario si existe, o vacío si no
-     */
     public Optional<User> findByEmail(String email) {
         if (email == null || email.isBlank()) {
             return Optional.empty();
         }
         try {
             return userRepo.findBy(user -> user.getEmail() != null && user.getEmail().equalsIgnoreCase(email.trim()));
-
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar el usuario en la persistencia.", e);
         }
@@ -163,21 +156,15 @@ public class UserService {
     }
 
     /**
-     * Actualiza la información de un usuario existente en la persistencia (archivo JSON)
-     * @param usuarioActualizado Objeto usuario con los datos modificados
-     * @return true si el proceso de guardado fue exitoso, false de lo contrario
+     * Actualiza la información de un usuario existente (como su imagePath al usar
+     * la paletica).
      */
     public boolean updateUserInPersistence(User usuarioActualizado) {
         try {
             List<User> usuarios = obtenerTodosLosUsuarios();
 
-            // 🔄 Quita el registro viejo que tenga el mismo email de golpe
             usuarios.removeIf(u -> u.getEmail().equalsIgnoreCase(usuarioActualizado.getEmail()));
-
-            // ➕ Agrega el nuevo objeto con los campos y roles mutados o actualizados
             usuarios.add(usuarioActualizado);
-
-            // 💾 Reescribe el archivo json completo
             guardarListaEnJson(usuarios);
 
             return true;

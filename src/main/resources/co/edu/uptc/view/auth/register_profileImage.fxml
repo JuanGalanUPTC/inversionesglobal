@@ -2,18 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root-container" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.auth.RestorePasswordFinalController">
+<StackPane styleClass="root-container" stylesheets="@../../css/login.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.auth.ProfileImageController">
     <children>
         <HBox alignment="CENTER" spacing="20.0">
             <children>
@@ -38,54 +35,32 @@
                         <Insets left="30.0" top="40.0" />
                     </padding>
                 </VBox>
-
                 <VBox alignment="CENTER" maxWidth="480.0" minWidth="450.0" prefWidth="460.0" spacing="20.0" HBox.hgrow="NEVER">
                     <children>
                         <ImageView fitHeight="120.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/logotipo.png" />
-                           </image>
+                            <image>
+                                <Image url="@../../images/logotipo.png" />
+                            </image>
                         </ImageView>
                         <VBox alignment="CENTER" spacing="20.0" styleClass="login-box">
                             <children>
-                                <Label styleClass="label-title" text="RESTABLECER CONTRASEÑA" />
-                                <HBox prefHeight="0.0" prefWidth="378.0">
-                                   <children>
-                                      <Label styleClass="label-subtitle" text="Ingresa tu nueva contraseña:" />
-                                   </children>
-                                </HBox>
-                                
-                                <StackPane maxWidth="374.0">
-                                    <children>
-                                        <PasswordField fx:id="passwordField" prefHeight="51.0" prefWidth="374.0" promptText="Nueva contraseña" styleClass="text-input-field" />
-                                        <TextField fx:id="txtPasswordMascarado" managed="false" prefHeight="51.0" prefWidth="374.0" promptText="Nueva contraseña" styleClass="text-input-field" visible="false" />
-                                    </children>
-                                </StackPane>
-
-                                <HBox alignment="CENTER_LEFT" maxWidth="360.0">
-                                   <children>
-                                      <CheckBox fx:id="mostrarPasswordCheckBox" mnemonicParsing="false" onAction="#togglePassword" prefHeight="20.0" prefWidth="169.0" styleClass="check-box-custom" text="Mostrar contraseña" />
-                                   </children>
-                                </HBox>
-
-                                <StackPane maxWidth="376.0">
-                                    <children>
-                                        <PasswordField fx:id="passwordField1" prefHeight="51.0" prefWidth="376.0" promptText="Confirmar contraseña" styleClass="text-input-field" />
-                                        <TextField fx:id="txtConfirmPasswordMascarado" managed="false" prefHeight="51.0" prefWidth="376.0" promptText="Confirmar contraseña" styleClass="text-input-field" visible="false" />
-                                    </children>
-                                </StackPane>
-
+                                <Label styleClass="label-title" text="ESTABLECER FOTO DE PERFIL" />
+                        <ImageView fx:id="imgPreview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/userIconDefault.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="buttonSeleccionarFotoDePerfil" mnemonicParsing="false" onAction="#selectImage" styleClass="btn-primary" text="CARGAR FOTO DE PERFIL" />
                                 <HBox alignment="CENTER_LEFT" maxWidth="360.0" spacing="50.0">
-                                   <children>
-                                        <Button maxWidth="175.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="51.0" prefWidth="175.0" styleClass="btn-secondary" text="Cancelar" />
-                                        <Button maxWidth="200.0" mnemonicParsing="false" onAction="#handleUpdatePassword" prefHeight="51.0" prefWidth="175.0" styleClass="btn-secondary" text="Siguiente" />
-                                   </children>
+                                    <children>
+                                        <Button maxWidth="175.0" mnemonicParsing="false" onAction="#handleOfOmitir" prefHeight="51.0" prefWidth="175.0" styleClass="btn-secondary" text="Omitir" />
+                                        <Button maxWidth="200.0" mnemonicParsing="false" onAction="#handleFinalizar" prefHeight="51.0" prefWidth="175.0" styleClass="btn-secondary" text="Aceptar" />
+                                    </children>
                                 </HBox>
                             </children>
                         </VBox>
                     </children>
                 </VBox>
-
                 <VBox alignment="CENTER_RIGHT" maxWidth="320.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                     <children>
                         <VBox fx:id="warningBox" alignment="CENTER" managed="false" spacing="20.0" styleClass="warning-box" visible="false">

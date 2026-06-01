@@ -21,7 +21,7 @@
             </padding>
          <HBox prefHeight="110.0" prefWidth="251.0" stylesheets="@../../css/misInversiones.css">
             <children>
-               <ImageView fitHeight="74.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="avatarImageView" fitHeight="74.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
                   <image>
                      <Image url="@../../images/userIconDefault.jpg" />
                   </image>
@@ -31,9 +31,9 @@
                </ImageView>
                <VBox prefHeight="84.0" prefWidth="119.0">
                   <children>
-                     <Button mnemonicParsing="false" prefHeight="21.0" prefWidth="24.0">
+                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize">
                         <graphic>
-                           <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                           <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
                               <image>
                                  <Image url="@../../images/customizeIcon.png" />
                               </image>
@@ -43,8 +43,8 @@
                            <Insets left="100.0" />
                         </VBox.margin>
                      </Button>
-                     <Label prefHeight="40.0" prefWidth="131.0" styleClass="header-title" text="Nombre" wrapText="true" />
-                     <Label prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Rol" />
+                     <Label fx:id="nombreLabel" prefHeight="40.0" prefWidth="131.0" styleClass="header-title" text="Nombre" wrapText="true" />
+                     <Label fx:id="rolLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Rol" />
                   </children>
                   <HBox.margin>
                      <Insets left="10.0" />

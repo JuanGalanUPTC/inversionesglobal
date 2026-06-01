@@ -26,6 +26,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import co.edu.uptc.app.App;
+import co.edu.uptc.model.User;
+
 public class DashboardController implements Initializable {
 
     // Inyectamos el contenedor principal
@@ -37,6 +40,14 @@ public class DashboardController implements Initializable {
     private Button btnCerrarSesion;
     @FXML
     private BorderPane mainBorderPane;
+
+    @FXML
+    private Label nombreLabel;
+
+    @FXML
+    private Label rolLabel;
+    @FXML
+    private ImageView avatarImageView;
 
     @FXML
     private void mostrarMisInversiones() {
@@ -52,6 +63,7 @@ public class DashboardController implements Initializable {
     private void mostrarActivos() {
         cambiarCentro("/co/edu/uptc/view/investor/activosView.fxml");
     }
+
     @FXML
     public void handleCerrarSesion(ActionEvent event) {
         // 1. Crear la alerta de confirmación
@@ -84,7 +96,7 @@ public class DashboardController implements Initializable {
                 // 4. Restauramos el tamaño (CON LA CORRECCIÓN APLICADA)
                 if (estabaMaximizada) {
                     stage.setMaximized(false); // 1. Apagamos un instante
-                    stage.setMaximized(true);  // 2. Encendemos para forzar pantalla completa
+                    stage.setMaximized(true); // 2. Encendemos para forzar pantalla completa
                 } else {
                     stage.centerOnScreen();
                 }
@@ -93,7 +105,7 @@ public class DashboardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } 
+        }
     }
 
     /**
@@ -105,15 +117,16 @@ public class DashboardController implements Initializable {
             // 1. Cargamos el archivo FXML secundario
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
             Parent nuevaVista = loader.load();
-            
+
             // 2. Reemplazamos el nodo central del BorderPane con la nueva vista
             mainBorderPane.setCenter(nuevaVista);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error al cargar la sub-vista: " + rutaFxml);
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // 1. Agregar los identificadores de los idiomas
@@ -131,6 +144,57 @@ public class DashboardController implements Initializable {
         if (warningBox != null) {
             warningBox.setVisible(false);
             warningBox.setManaged(false);
+        }
+
+        User usuarioLogueado = App.getUsuarioLogueado();
+
+        if (usuarioLogueado.getProfileImagePath() != null) {
+            try {
+                String rutaImagen = usuarioLogueado.getProfileImagePath();
+                Image avatar;
+
+                if (rutaImagen.startsWith("/")) {
+                    // 📦 Caso A: Es la foto por defecto
+                    java.io.InputStream stream = getClass().getResourceAsStream(rutaImagen);
+                    if (stream == null) {
+                        throw new java.io.FileNotFoundException("No se encontró el recurso interno: " + rutaImagen);
+                    }
+                    avatar = new Image(stream);
+                } else {
+                    // 📁 Caso B: Es una imagen personalizada en el disco
+                    java.io.File file = new java.io.File(rutaImagen);
+                    if (file.exists()) {
+                        avatar = new Image(file.toURI().toString());
+                    } else {
+                        avatar = new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
+                    }
+                }
+
+                avatarImageView.setImage(avatar);
+
+                // 🎯 ¡AQUÍ ESTÁ EL TRUCO DEL CÍRCULO!
+                // 1. Forzamos un tamaño fijo al ImageView si no lo tiene en el FXML (ej: 80x80)
+                double ancho = 80;
+                double alto = 80;
+                avatarImageView.setFitWidth(ancho);
+                avatarImageView.setFitHeight(alto);
+                avatarImageView.setPreserveRatio(false); // Para que se adapte obligatoriamente al círculo
+
+                // 2. Creamos una máscara geométrica circular posicionada en el centro del
+                // ImageView
+                javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle();
+                clip.setCenterX(ancho / 2); // Centro X (40)
+                clip.setCenterY(alto / 2); // Centro Y (40)
+                clip.setRadius(ancho / 2); // Radio del círculo (40)
+
+                // 3. Le aplicamos la máscara al visor de imágenes
+                avatarImageView.setClip(clip);
+
+            } catch (Exception e) {
+                System.err.println("❌ Error al renderizar el avatar: " + e.getMessage());
+                avatarImageView
+                        .setImage(new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg")));
+            }
         }
     }
 
