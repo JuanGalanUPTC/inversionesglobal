@@ -17,6 +17,7 @@ co\edu\uptc\exception\IncompatibleRiskProfileException.class
 co\edu\uptc\service\PortfolioService.class
 co\edu\uptc\app\App.class
 co\edu\uptc\viewcontroller\PrimaryController.class
+co\edu\uptc\viewcontroller\DashboardController$1.class
 co\edu\uptc\exception\InvestorNotFoundException.class
 co\edu\uptc\util\AppConfig$CurrencyMode.class
 co\edu\uptc\viewcontroller\SecondaryController.class

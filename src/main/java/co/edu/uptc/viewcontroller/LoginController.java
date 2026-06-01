@@ -160,8 +160,8 @@ public class LoginController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleLogin() throws IOException {
+@FXML
+    private void handleLogin() {
         String email = emailField.getText().trim();
 
         // Si manejas la lógica de contraseña oculta/visible en el login, tomamos el
@@ -186,36 +186,40 @@ public class LoginController implements Initializable {
             // --- 🔑 LOGIN EXITOSO ---
             User user = usuarioAutenticado.get();
             System.out.println("✅ ¡Bienvenido! Sesión iniciada para: " + user.getEmail());
-try {
+            
+            try {
                 // 1. Cargamos el FXML del Dashboard
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/dashboard.fxml"));
                 Parent dashboardRoot = loader.load();
 
-                // 2. Obtenemos de forma segura la ventana actual usando el emailField
+                // 2. Obtenemos de forma segura la ventana actual usando el campo de texto
                 Stage stage = (Stage) emailField.getScene().getWindow();
 
-                // 3. Le montamos una escena fresca para romper la incoherencia visual
+                // 🌟 EL TRUCO: Guardar el estado de la ventana ANTES de cambiar nada
+                boolean estabaMaximizada = stage.isMaximized();
+
+                // 3. Montamos la nueva escena
                 Scene nuevaEscena = new Scene(dashboardRoot);
                 stage.setScene(nuevaEscena);
-                stage.centerOnScreen();
+
+                // 4. Restauramos el tamaño correcto (Aquí está la magia para el bug de la esquina)
+                if (estabaMaximizada) {
+                    stage.setMaximized(false); // APAGAMOS un milisegundo
+                    stage.setMaximized(true);  // ENCENDEMOS para forzar la pantalla completa real
+                } else {
+                    stage.centerOnScreen();   // Solo centramos si era una ventana pequeña
+                }
+                
                 stage.show();
 
             } catch (IOException e) {
                 System.err.println("Error al cargar el dashboard: " + e.getMessage());
                 e.printStackTrace();
-            } //OJO CAMBIAR AQUÍ PARA PROCEDER AL DASHBOARD
-        } else {
-            // --- ❌ CREDENCIALES INCORRECTAS ---
-            mostrarAlerta("Correo electrónico o contraseña incorrectos.");
-
-            // Opcional: Limpiar el campo de contraseña por seguridad para un nuevo intento
-            passwordField.clear();
-            if (txtPasswordMascarado != null) {
-                txtPasswordMascarado.clear();
             }
+        } else {
+            mostrarAlerta("Correo o contraseña incorrectos.");
         }
     }
-
     /**
      * Muestra la alerta visual en el warningBox modificando el texto internamente
      */

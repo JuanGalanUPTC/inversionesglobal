@@ -74,11 +74,20 @@ public class DashboardController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/login.fxml"));
                 Parent loginRoot = loader.load();
 
-                // Obtener la ventana actual y cambiar la escena
+                // Obtener la ventana actual y guardar su estado
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                boolean estabaMaximizada = stage.isMaximized();
+
                 Scene loginScene = new Scene(loginRoot);
                 stage.setScene(loginScene);
-                stage.centerOnScreen();
+
+                // 4. Restauramos el tamaño (CON LA CORRECCIÓN APLICADA)
+                if (estabaMaximizada) {
+                    stage.setMaximized(false); // 1. Apagamos un instante
+                    stage.setMaximized(true);  // 2. Encendemos para forzar pantalla completa
+                } else {
+                    stage.centerOnScreen();
+                }
                 stage.show();
 
             } catch (IOException e) {

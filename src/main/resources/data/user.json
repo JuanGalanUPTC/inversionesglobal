@@ -5,13 +5,13 @@
     "ciudadNacimiento": "duitama"
   },
   {
-    "email": "carlos@gmail.com",
-    "password": "Yadiraerwin2304*",
-    "ciudadNacimiento": "yopal"
-  },
-  {
     "email": "axel@gmail.com",
     "password": "$2a$10$jNEPIClKIkr0VwS1PBN3AOonxVQAD2U2E0e/I4f5nie94llZ.yUOe",
     "ciudadNacimiento": "sogamoso"
+  },
+  {
+    "email": "carlos@gmail.com",
+    "password": "$2a$10$9vlEX7AVUHYxLpFLbJs9KOFH6qdyCHW8rStUXtu9J.1mUZZpB.FiC",
+    "ciudadNacimiento": "yopal"
   }
 ]
