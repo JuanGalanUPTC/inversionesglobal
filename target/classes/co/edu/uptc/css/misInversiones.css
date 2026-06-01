@@ -1,0 +1,74 @@
+/* --- FONDO PRINCIPAL --- */
+.root-container {
+    -fx-background-color: #D3D3D3; /* Gris claro basado en tu imagen */
+}
+
+/* --- TEXTOS DEL ENCABEZADO --- */
+.header-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A1A1A; /* Casi negro */
+}
+
+.header-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #737373; /* Gris medio */
+}
+
+/* --- ESTILO GENERAL DE LAS TARJETAS BLANCAS --- */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px; /* Bordes redondeados */
+    /* Sombra suave: dropshadow(tipo, color, radio, spread, x, y) */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
+}
+
+/* --- TEXTOS DE LA TARJETA DE SALDO --- */
+.card-label-small {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A5568; /* Azul-gris oscuro */
+}
+
+.card-balance {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A202C; /* Azul oscuro casi negro */
+}
+
+/* --- ESTILOS DE LA TARJETA "VACÍA" (Empty State) --- */
+.icon-container {
+    -fx-background-color: #F1F5F9; /* Círculo gris súper clarito */
+    -fx-background-radius: 50px;   /* Lo hace redondo */
+    -fx-min-width: 70px;
+    -fx-min-height: 70px;
+    -fx-max-width: 70px;
+    -fx-max-height: 70px;
+}
+
+.empty-state-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3748;
+    -fx-padding: 20px 0px 5px 0px; /* Espacio arriba y abajo */
+}
+
+.empty-state-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #A0AEC0; /* Gris claro */
+}
+
+/* --- BOTÓN OSCURO --- */
+.btn-primary-dark {
+    -fx-background-color: #1E293B; /* Azul Oxford (el color oscuro del diseño) */
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 12px 30px;
+    -fx-cursor: hand;
+}
+
+.btn-primary-dark:hover {
+    -fx-background-color: #0F172A; /* Se oscurece al pasar el mouse */
+}
