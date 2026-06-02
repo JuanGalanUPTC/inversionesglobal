@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" styleClass="content-area" stylesheets="@../../css/dashboard.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.admin.GestionarActivosController">
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label text="Gestión de Activos Financieros" styleClass="header-title"/>
+        <Region HBox.hgrow="ALWAYS" />
+        <TextField fx:id="txtBusqueda" promptText="Buscar activo..." styleClass="text-input-field" prefWidth="250" />
+    </HBox>
+
+    <TableView fx:id="tablaActivos" VBox.vgrow="ALWAYS" styleClass="card">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Activo" prefWidth="200" />
+            <TableColumn fx:id="colPrecio" text="Precio Actual (USD)" prefWidth="180" />
+            <TableColumn fx:id="colVolatilidad" text="Volatilidad (%)" prefWidth="180" />
+            <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="150" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+    
+    <Label text="* La volatilidad se expresa en valor decimal (0.1 = 10%)" style="-fx-text-fill: #64748B; -fx-font-size: 12px;"/>
+</VBox>

@@ -10,7 +10,7 @@
     </padding>
 
     <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label text="Gestión de Inversionistas" styleClass="header-title" style="-fx-font-size: 24px;"/>
+        <Label text="Gestión de Inversionistas" styleClass="header-title"/>
         <Region HBox.hgrow="ALWAYS" />
         <TextField fx:id="txtBusqueda" promptText="Buscar por nombre o gmail..." styleClass="text-input-field" prefWidth="250" style="-fx-font-size: 14px;"/>
         <ComboBox fx:id="comboFiltroActivo" promptText="Filtrar por inversión" styleClass="combo-idioma" prefWidth="200"/>

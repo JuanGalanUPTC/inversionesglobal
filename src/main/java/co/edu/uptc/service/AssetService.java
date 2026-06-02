@@ -113,6 +113,43 @@ public class AssetService {
     }
 
     /**
+     * Elimina un activo de forma permanente.
+     */
+    public boolean deleteAsset(String id) {
+        if (id == null) return false;
+        String target = id.trim();
+        boolean exists = repo.findBy(a -> a.getId().equalsIgnoreCase(target)).isPresent();
+        if (exists) {
+            repo.deleteBy(a -> a.getId().equalsIgnoreCase(target));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Actualiza un activo existente en el repositorio.
+     */
+    public void updateAsset(Asset updatedAsset) {
+        if (updatedAsset == null || updatedAsset.getId() == null) {
+            throw new IllegalArgumentException("INVALID_ASSET_DATA");
+        }
+
+        List<Asset> assets = repo.findAll();
+        boolean isUpdated = false;
+        String targetId = updatedAsset.getId().trim();
+
+        for (int i = 0; i < assets.size(); i++) {
+            if (assets.get(i).getId().equalsIgnoreCase(targetId)) {
+                assets.set(i, updatedAsset);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (isUpdated) repo.replaceAll(assets);
+    }
+
+    /**
      * Consulta activos filtrando por un rango de precios inclusivo.
      */
     public List<Asset> findByPriceRange(double minPrice, double maxPrice) {

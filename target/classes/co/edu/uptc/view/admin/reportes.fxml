@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<VBox spacing="20" styleClass="content-area" stylesheets="@../../css/dashboard.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.admin.ReportesController">
+    <stylesheets>
+        <URL value="@../../css/dashboard.css" />
+        <URL value="@../../css/misInversiones.css" />
+    </stylesheets>
+    <padding>
+        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+    </padding>
+    <VBox spacing="5.0">
+        <Label styleClass="header-title" text="Sistema de Reportes" />
+        <Label styleClass="header-subtitle" text="Genera informes detallados y consulta el rendimiento global del sistema." />
+    </VBox>
+
+    <VBox spacing="20.0" VBox.vgrow="ALWAYS">
+        <!-- Reporte de Ganancias Globales -->
+        <VBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                <VBox spacing="5.0" minWidth="250">
+                    <Label styleClass="header-title" text="Ganancias Globales" style="-fx-font-size: 22px;"/>
+                    <Label styleClass="header-subtitle" text="Rendimiento consolidado del sistema." />
+                </VBox>
+                <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-text-fill: white;" text="Rango:" />
+                    <DatePicker fx:id="dpFechaInicioGlobal" prefWidth="130" styleClass="combo-idioma" />
+                    <DatePicker fx:id="dpFechaFinGlobal" prefWidth="130" styleClass="combo-idioma" />
+                    <Button onAction="#generarReporteGlobal" styleClass="btn-primary-dark" text="Generar PDF" />
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <VBox alignment="CENTER_RIGHT" minWidth="180">
+                    <Label fx:id="lblGananciaGlobal" styleClass="header-title" text="Total: $0.00" style="-fx-font-size: 24px; -fx-text-fill: #10B981;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Reporte de Ganancias por Inversionista -->
+        <VBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                <VBox spacing="5.0" minWidth="250">
+                    <Label styleClass="header-title" text="Ganancias por Inversionista" style="-fx-font-size: 22px;"/>
+                    <Label styleClass="header-subtitle" text="Filtrar por código de usuario." />
+                </VBox>
+                <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="txtIdInversionista" prefWidth="130" promptText="Código Inversor" styleClass="text-input-field" />
+                    <DatePicker fx:id="dpFechaInicioInversionista" prefWidth="130" styleClass="combo-idioma" />
+                    <DatePicker fx:id="dpFechaFinInversionista" prefWidth="130" styleClass="combo-idioma" />
+                    <Button onAction="#generarReporteInversionista" styleClass="btn-primary-dark" text="Exportar" />
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <VBox alignment="CENTER_RIGHT" minWidth="180">
+                    <Label fx:id="lblGananciaInversionista" styleClass="header-title" text="Total: $0.00" style="-fx-font-size: 24px; -fx-text-fill: #10B981;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Top 5 Mejores Inversionistas -->
+        <VBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                <VBox spacing="10.0" minWidth="250" maxWidth="250">
+                    <Label styleClass="header-title" text="Top 5 Inversionistas" style="-fx-font-size: 22px;"/>
+                    <Label styleClass="header-subtitle" text="Líderes por rendimiento porcentual en el sistema." wrapText="true" />
+                    <Button onAction="#actualizarTopInversionistas" styleClass="btn-primary-dark" text="Actualizar Lista" />
+                </VBox>
+                <TableView fx:id="tablaTopInversionistas" maxHeight="150" styleClass="table-view" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colTopNombre" prefWidth="150.0" text="Inversionista" />
+                        <TableColumn fx:id="colTopRendimiento" prefWidth="100.0" text="Rendimiento (%)" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

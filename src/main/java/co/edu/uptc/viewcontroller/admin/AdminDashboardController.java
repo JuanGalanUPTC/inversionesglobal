@@ -120,12 +120,12 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void mostrarReportes() {
-        System.out.println("Cargando Reportes...");
+        cambiarCentro("/co/edu/uptc/view/admin/reportes.fxml");
     }
 
     @FXML
     private void mostrarGestionarActivos() {
-        System.out.println("Cargando Gestión de Activos...");
+        cambiarCentro("/co/edu/uptc/view/admin/gestionar_activos.fxml");
     }
 
     @FXML
