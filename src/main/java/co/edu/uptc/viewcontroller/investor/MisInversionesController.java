@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.fxml.Initializable;
+import java.util.ResourceBundle;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,9 +36,11 @@ public class MisInversionesController {
     private final List<InversionSimulada> listaDeInversiones = new ArrayList<>();
     private double saldoDisponible = 20000.00;
 
+    private ResourceBundle rb;
+
     @FXML
-    public void initialize() {
-        System.out.println("Inicializando panel de control de inversiones...");
+    public void initialize(java.net.URL location, ResourceBundle resources) {
+        this.rb = resources;
         
         // 1. Llenar el ComboBox del modal con activos de prueba
         if (comboActivos != null) {
@@ -96,7 +100,7 @@ public class MisInversionesController {
             HBox.setHgrow(infoIzquierda, Priority.ALWAYS);
             Label lblTitulo = new Label(inv.getNombre());
             lblTitulo.getStyleClass().add("item-title");
-            Label lblSub = new Label("Activa • " + inv.getDetalleUnidades());
+            Label lblSub = new Label(rb.getString("investor.my_investments.active") + " • " + inv.getDetalleUnidades());
             lblSub.getStyleClass().add("item-subtitle");
             infoIzquierda.getChildren().addAll(lblTitulo, lblSub);
 
@@ -104,7 +108,7 @@ public class MisInversionesController {
             VBox infoDerecha = new VBox(5.0);
             infoDerecha.setAlignment(Pos.CENTER_RIGHT);
             Label lblPerfLabel = new Label("Rendimiento");
-            lblPerfLabel.getStyleClass().add("item-perf-label");
+            lblPerfLabel.getStyleClass().add("item-perf-label"); // No se traduce el estilo, solo el texto
             Label lblPerfValue = new Label("+17%"); // Simulado estático para coincidir con tu diseño
             lblPerfValue.getStyleClass().add("item-perf-value-positive");
             infoDerecha.getChildren().addAll(lblPerfLabel, lblPerfValue);
@@ -149,14 +153,14 @@ public class MisInversionesController {
         String montoTexto = txtMonto.getText();
 
         if (activoSeleccionado == null || montoTexto.isEmpty()) {
-            System.out.println("Por favor completa los campos del formulario.");
+            System.out.println(rb.getString("investor.my_investments.form_incomplete"));
             return; 
         }
 
         try {
             double monto = Double.parseDouble(montoTexto);
             if (monto > saldoDisponible) {
-                System.out.println("Saldo insuficiente.");
+                System.out.println(rb.getString("investor.my_investments.insufficient_balance"));
                 return;
             }
 
@@ -174,7 +178,7 @@ public class MisInversionesController {
             actualizarPantalla(); // Recarga la UI automáticamente cambiando de estado
             
         } catch (NumberFormatException e) {
-            System.out.println("Monto ingresado no válido.");
+            System.out.println(rb.getString("investor.my_investments.invalid_amount"));
         }
     }
 
@@ -182,8 +186,8 @@ public class MisInversionesController {
      * Carga el FXML de detalles en el contenedor principal de tu Dashboard
      */
     private void irAPantallaDetalles(InversionSimulada inversion) {
-    try {
-        System.out.println("Navegando a detalles de: " + inversion.getNombre());
+        try {
+        // System.out.println(rb.getString("investor.my_investments.navigating_details") + " " + inversion.getNombre()); // Opcional, si quieres traducir este log
         
         // 1. Creas el FXMLLoader como lo tienes actualmente
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/investor/detalleInversion.fxml"));

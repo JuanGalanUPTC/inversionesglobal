@@ -28,15 +28,23 @@ public class GestionarInversionistasController implements Initializable {
     private final InvestorService investorService = new InvestorService();
     private final AssetService assetService = new AssetService();
     private FilteredList<Investor> listaFiltrada;
+    private ResourceBundle rb;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
         configurarTabla();
         cargarDatos();
         configurarFiltros();
     }
 
     private void configurarTabla() {
+        // Traducir encabezados de columna
+        colNombre.setText(rb.getString("table.name"));
+        colGmail.setText(rb.getString("table.email"));
+        colCapital.setText(rb.getString("table.capital"));
+        colAcciones.setText(rb.getString("table.actions"));
+
         // Extraemos un "Nombre" a partir del correo si no hay campo de nombre real en el modelo
         colNombre.setCellValueFactory(cellData -> {
             String email = cellData.getValue().getEmail();
@@ -105,7 +113,7 @@ public class GestionarInversionistasController implements Initializable {
         tablaInversionistas.setItems(listaFiltrada);
         
         // Poblar el combo de activos para filtrar por tipo de inversión
-        comboFiltroActivo.getItems().add("Todos los Activos");
+        comboFiltroActivo.getItems().add(rb.getString("filter.all_assets"));
         try {
             assetService.findAll().forEach(a -> comboFiltroActivo.getItems().add(a.getName()));
         } catch (Exception e) {
@@ -129,7 +137,7 @@ public class GestionarInversionistasController implements Initializable {
             boolean matchBusqueda = investor.getEmail() != null && investor.getEmail().toLowerCase().contains(busqueda);
             
             // Filtro por tipo de activo en el que ha invertido (Busca en su lista de inversiones)
-            boolean matchActivo = (activoFiltro == null || activoFiltro.equals("Todos los Activos")) ||
+            boolean matchActivo = (activoFiltro == null || activoFiltro.equals(rb.getString("filter.all_assets"))) ||
                 (investor.getInvestments() != null && investor.getInvestments().stream().anyMatch(inv -> {
                     // Necesitamos buscar el Asset por su ID para obtener el nombre
                     Asset asset = assetService.findById(inv.getAssetId());
@@ -142,9 +150,9 @@ public class GestionarInversionistasController implements Initializable {
 
     private void editarEmail(Investor investor) {
         TextInputDialog dialog = new TextInputDialog(investor.getEmail());
-        dialog.setTitle("Gestión de Usuarios");
-        dialog.setHeaderText("Modificar correo electrónico del inversionista");
-        dialog.setContentText("Ingrese el nuevo Gmail:");
+        dialog.setTitle(rb.getString("dialog.edit_user.title"));
+        dialog.setHeaderText(rb.getString("dialog.edit_user.header"));
+        dialog.setContentText(rb.getString("dialog.edit_user.content"));
 
         // Aplicar el estilo del dashboard al diálogo
         dialog.getDialogPane().getStylesheets().add(getClass().getResource("/co/edu/uptc/css/dashboard.css").toExternalForm());
@@ -156,7 +164,7 @@ public class GestionarInversionistasController implements Initializable {
                 investorService.updateInvestor(investor);
                 tablaInversionistas.refresh();
             } else {
-                Alert error = new Alert(Alert.AlertType.ERROR, "El formato del correo ingresado no es válido.");
+                Alert error = new Alert(Alert.AlertType.ERROR, rb.getString("error.invalid_email"));
                 error.show();
             }
         });
@@ -164,9 +172,9 @@ public class GestionarInversionistasController implements Initializable {
 
     private void eliminarInversionista(Investor investor) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("🛡️ Seguridad de Datos");
-        alert.setHeaderText("¿Desea eliminar definitivamente al inversionista?");
-        alert.setContentText("Cuenta: " + investor.getEmail() + "\n\nEsta acción eliminará el registro del sistema de forma irreversible.");
+        alert.setTitle(rb.getString("dialog.delete_user.title"));
+        alert.setHeaderText(rb.getString("dialog.delete_user.header"));
+        alert.setContentText(investor.getEmail() + "\n\n" + rb.getString("dialog.delete_user.content"));
 
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             if (investorService.deleteInvestor(investor.getEmail())) {

@@ -4,5 +4,6 @@
         "comments": "",
         "textMateRules": []
     },
-    "commentTranslate.targetLanguage": "es"
+    "commentTranslate.targetLanguage": "es",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

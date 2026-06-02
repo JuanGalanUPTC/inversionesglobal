@@ -24,11 +24,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
+import co.edu.uptc.util.I18nManager;
 
 public class AdminDashboardController implements Initializable {
 
@@ -40,21 +42,42 @@ public class AdminDashboardController implements Initializable {
     @FXML private ComboBox<String> idiomaComboBox;
     @FXML private Button btnCerrarSesion;
 
+    private String rutaVistaActual;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Configurar ComboBox de idiomas (Lógica interna)
-        idiomaComboBox.getItems().addAll("es", "en");
+        idiomaComboBox.getItems().setAll("es", "en");
         idiomaComboBox.setCellFactory(param -> createLanguageCell());
         idiomaComboBox.setButtonCell(createLanguageCell());
-        idiomaComboBox.getSelectionModel().selectFirst();
+        
+        idiomaComboBox.getSelectionModel().select(App.getLocale().getLanguage());
 
-        // 2. Cargar datos del usuario logueado
+        idiomaComboBox.setOnAction(e -> {
+            String selected = idiomaComboBox.getValue();
+            if (selected != null && !selected.equals(App.getLocale().getLanguage())) {
+                App.changeLanguage(selected);
+                recargarTextos();
+                // Refrescamos solo la vista central si hay una cargada
+                if (rutaVistaActual != null) {
+                    cambiarCentro(rutaVistaActual);
+                }
+            }
+        });
+
+        // Cargar datos del usuario logueado
         User admin = App.getUsuarioLogueado();
         if (admin != null) {
-            nombreLabel.setText(admin.getEmail().split("@")[0]); // O el nombre si estuviera disponible
-            rolLabel.setText("Administrador");
+            String email = admin.getEmail();
+            nombreLabel.setText((email != null && email.contains("@")) ? email.split("@")[0] : "Admin");
             configurarAvatar(admin.getProfileImagePath());
         }
+        recargarTextos();
+    }
+
+    private void recargarTextos() {
+        ResourceBundle bundle = I18nManager.getInstance().getBundle();
+        rolLabel.setText(bundle.getString("common.admin"));
+        btnCerrarSesion.setText(bundle.getString("sidebar.logout"));
     }
 
     private void configurarAvatar(String path) {
@@ -103,7 +126,7 @@ public class AdminDashboardController implements Initializable {
                     String flagPath = item.equals("es") ? "/co/edu/uptc/images/colflag.png" : "/co/edu/uptc/images/usaflag.jpg";
                     flag.setImage(new Image(getClass().getResourceAsStream(flagPath)));
                     
-                    Label name = new Label(item.equals("es") ? "Español" : "English");
+                    Label name = new Label(I18nManager.getInstance().getBundle().getString(item.equals("es") ? "language.es" : "language.en"));
                     name.setStyle("-fx-text-fill: white;");
                     
                     container.getChildren().addAll(flag, name);
@@ -131,8 +154,8 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private void handleCerrarSesion(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Cerrar Sesión");
-        alert.setHeaderText("¿Seguro que desea salir?");
+        alert.setTitle(I18nManager.getInstance().getBundle().getString("admin.alert.logout.title"));
+        alert.setHeaderText(I18nManager.getInstance().getBundle().getString("admin.alert.logout.header"));
         
         if (alert.showAndWait().get() == ButtonType.OK) {
             App.setRoot("auth/login");
@@ -141,7 +164,10 @@ public class AdminDashboardController implements Initializable {
 
     private void cambiarCentro(String rutaFxml) {
         try {
+            this.rutaVistaActual = rutaFxml;
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
+            // Inyectamos el bundle actualizado para que la subvista se cargue en el idioma correcto
+            loader.setResources(I18nManager.getInstance().getBundle());
             Parent node = loader.load();
             mainBorderPane.setCenter(node);
         } catch (IOException e) {

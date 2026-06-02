@@ -8,7 +8,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
 
+import co.edu.uptc.util.I18nManager;
 import co.edu.uptc.model.User;
 
 public class App extends Application {
@@ -45,6 +47,14 @@ public class App extends Application {
 
     public static User getUsuarioLogueado() {
         return usuarioLogueado;
+    }
+
+    public static void changeLanguage(String lang) {
+        I18nManager.getInstance().setLocale(new Locale(lang));
+    }
+
+    public static Locale getLocale() {
+        return I18nManager.getInstance().getCurrentLocale();
     }
 
     public static void main(String[] args) {

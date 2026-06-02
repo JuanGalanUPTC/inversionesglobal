@@ -25,9 +25,11 @@ public class GestionarActivosController implements Initializable {
 
     private final AssetService assetService = new AssetService();
     private FilteredList<Asset> listaFiltrada;
+    private ResourceBundle rb;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
         configurarTabla();
         cargarDatos();
         
@@ -40,6 +42,11 @@ public class GestionarActivosController implements Initializable {
     }
 
     private void configurarTabla() {
+        colNombre.setText(rb.getString("table.name"));
+        colPrecio.setText(rb.getString("table.price"));
+        colVolatilidad.setText(rb.getString("table.volatility"));
+        colAcciones.setText(rb.getString("table.actions"));
+
         colNombre.setCellValueFactory(new PropertyValueFactory<>("name"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("actualPrice"));
         colVolatilidad.setCellValueFactory(new PropertyValueFactory<>("volatility"));
@@ -95,9 +102,9 @@ public class GestionarActivosController implements Initializable {
     private void editarActivo(Asset asset) {
         // Diálogo para editar Precio
         TextInputDialog priceDialog = new TextInputDialog(String.valueOf(asset.getActualPrice()));
-        priceDialog.setTitle("Editar Activo");
-        priceDialog.setHeaderText("Actualizar datos de " + asset.getName());
-        priceDialog.setContentText("Nuevo Precio (USD):");
+        priceDialog.setTitle(rb.getString("dialog.edit_asset.title"));
+        priceDialog.setHeaderText(rb.getString("dialog.edit_asset.header") + " " + asset.getName());
+        priceDialog.setContentText(rb.getString("dialog.edit_asset.price_content"));
         
         Optional<String> priceResult = priceDialog.showAndWait();
         priceResult.ifPresent(newPrice -> {
@@ -106,15 +113,15 @@ public class GestionarActivosController implements Initializable {
                 
                 // Diálogo para editar Volatilidad
                 TextInputDialog volDialog = new TextInputDialog(String.valueOf(asset.getVolatility()));
-                volDialog.setHeaderText("Ajustar Volatilidad (0.0 a 1.0)");
-                volDialog.setContentText("Nueva Volatilidad:");
+                volDialog.setHeaderText(rb.getString("dialog.edit_asset.volatility_header"));
+                volDialog.setContentText(rb.getString("dialog.edit_asset.volatility_content"));
                 
                 Optional<String> volResult = volDialog.showAndWait();
                 volResult.ifPresent(newVol -> {
                     double vol = Double.parseDouble(newVol);
                     asset.setActualPrice(price);
                     asset.setVolatility(vol);
-                    assetService.updateAsset(asset);
+                    assetService.updateAsset(asset); // Asumiendo que este método existe y actualiza
                     tablaActivos.refresh();
                 });
             } catch (NumberFormatException e) {
@@ -125,9 +132,9 @@ public class GestionarActivosController implements Initializable {
 
     private void eliminarActivo(Asset asset) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Eliminar Activo");
-        alert.setHeaderText("¿Estás seguro de eliminar " + asset.getName() + "?");
-        alert.setContentText("Esta acción afectará a todos los inversionistas que posean este activo.");
+        alert.setTitle(rb.getString("dialog.delete_asset.title"));
+        alert.setHeaderText(rb.getString("dialog.delete_asset.header") + " " + asset.getName() + "?");
+        alert.setContentText(rb.getString("dialog.delete_asset.content"));
 
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             assetService.deleteAsset(asset.getId());

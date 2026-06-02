@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import co.edu.uptc.util.I18nManager;
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
 import co.edu.uptc.model.enums.UserRole;
@@ -50,11 +51,13 @@ public class LoginController implements Initializable {
     @FXML
     private Label warningMessage;
 
+    private ResourceBundle rb;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
         // 1. Agregar los identificadores de los idiomas
         idiomaComboBox.getItems().addAll("es", "en");
-
         // 2. Definir cómo se verán los elementos en la lista desplegable
         idiomaComboBox.setCellFactory(param -> createCustomCell());
 
@@ -62,7 +65,20 @@ public class LoginController implements Initializable {
         idiomaComboBox.setButtonCell(createCustomCell());
 
         // Seleccionar el primero por defecto
-        idiomaComboBox.getSelectionModel().selectFirst();
+        idiomaComboBox.getSelectionModel().select(App.getLocale().getLanguage());
+
+        // Listener para cambiar el idioma y refrescar la vista
+        idiomaComboBox.setOnAction(e -> {
+            String selected = idiomaComboBox.getValue();
+            if (selected != null && !selected.equals(App.getLocale().getLanguage())) {
+                App.changeLanguage(selected);
+                try {
+                    App.setRoot("auth/login");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 
         if (warningBox != null) {
             warningBox.setVisible(false);
@@ -89,8 +105,8 @@ public class LoginController implements Initializable {
                     flagView.setFitWidth(24);
                     flagView.setFitHeight(16);
                     flagView.setPreserveRatio(true);
-
-                    Label lblName = new Label(item.equals("es") ? "Español" : "English");
+                    
+                    Label lblName = new Label(I18nManager.getInstance().getBundle().getString(item.equals("es") ? "language.es" : "language.en"));
                     lblName.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
 
                     // Ajustamos las rutas exactamente a tu paquete personalizado
@@ -175,7 +191,7 @@ public class LoginController implements Initializable {
 
         // 1. Validación básica de campos vacíos en la interfaz
         if (email.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Por favor, ingresa tu correo y contraseña.");
+            mostrarAlerta(rb.getString("auth.login.empty_fields"));
             return;
         }
 
@@ -198,7 +214,7 @@ public class LoginController implements Initializable {
                 App.setRoot("investor/dashboard");
             } 
         } else {
-            mostrarAlerta("Correo electrónico o contraseña incorrectos.");
+            mostrarAlerta(rb.getString("auth.login.invalid_credentials"));
             if (passwordField != null)
                 passwordField.clear();
             if (txtPasswordMascarado != null)
@@ -212,7 +228,7 @@ public class LoginController implements Initializable {
     @FXML
     private void mostrarAlerta(String mensaje) {
         if (warningBox == null) {
-            System.out.println("[Alerta en consola por falta de binding]: " + mensaje);
+            System.err.println("[Alerta en consola por falta de binding]: " + mensaje); // Usar System.err para errores
             return;
         }
 

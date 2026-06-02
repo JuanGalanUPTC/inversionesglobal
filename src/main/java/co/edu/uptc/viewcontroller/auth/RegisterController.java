@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
+import java.util.Locale;
 
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.enums.UserRole;
@@ -27,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import co.edu.uptc.util.I18nManager;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -61,13 +63,29 @@ public class RegisterController implements Initializable {
     @FXML
     private Label warningMessage;
 
+    private ResourceBundle rb;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
         // Inicialización del ComboBox de idiomas
         idiomaComboBox.getItems().addAll("es", "en");
         idiomaComboBox.setCellFactory(param -> createCustomCell());
         idiomaComboBox.setButtonCell(createCustomCell());
-        idiomaComboBox.getSelectionModel().selectFirst();
+        idiomaComboBox.getSelectionModel().select(App.getLocale().getLanguage());
+
+        // Listener para cambiar el idioma y refrescar la vista
+        idiomaComboBox.setOnAction(e -> {
+            String selected = idiomaComboBox.getValue();
+            if (selected != null && !selected.equals(App.getLocale().getLanguage())) {
+                App.changeLanguage(selected);
+                try {
+                    App.setRoot("auth/register");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 
         // Ocultar caja de alertas al arrancar
         if (warningBox != null) {
@@ -92,8 +110,8 @@ public class RegisterController implements Initializable {
                     flagView.setFitWidth(24);
                     flagView.setFitHeight(16);
                     flagView.setPreserveRatio(true);
-
-                    Label lblName = new Label(item.equals("es") ? "Español" : "English");
+                    
+                    Label lblName = new Label(I18nManager.getInstance().getBundle().getString(item.equals("es") ? "language.es" : "language.en"));
                     lblName.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
 
                     String imagePath = item.equals("es") ? "/co/edu/uptc/images/colflag.png"
@@ -154,19 +172,19 @@ public class RegisterController implements Initializable {
 
         // 1. Validar que absolutamente ningún campo esté vacío
         if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || ciudadNacimiento.isEmpty()) {
-            mostrarAlerta("Por favor, completa todos los campos del formulario.");
+            mostrarAlerta(rb.getString("auth.register.empty_fields"));
             return;
         }
 
         // 2. Validar formato de correo electrónico
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            mostrarAlerta("El formato del correo electrónico no es válido.");
+            mostrarAlerta(rb.getString("auth.register.invalid_email_format"));
             return;
         }
 
         // 3. Validar longitud mínima de la contraseña (Mínimo 8 caracteres)
         if (password.length() < 8) {
-            mostrarAlerta("La contraseña debe tener al menos 8 caracteres.");
+            mostrarAlerta(rb.getString("auth.register.password_min_length"));
             return;
         }
 
@@ -174,13 +192,13 @@ public class RegisterController implements Initializable {
         // específico)
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$";
         if (!password.matches(passwordRegex)) {
-            mostrarAlerta("La contraseña debe incluir mayúscula, minúscula, número y un símbolo (@$!%*?&).");
+            mostrarAlerta(rb.getString("auth.register.password_complexity"));
             return;
         }
 
         // 5. Validar que ambas contraseñas coincidan rigurosamente
         if (!password.equals(confirmPassword)) {
-            mostrarAlerta("Las contraseñas ingresadas no coinciden.");
+            mostrarAlerta(rb.getString("auth.register.passwords_not_match"));
             return;
         }
 
@@ -206,17 +224,17 @@ public class RegisterController implements Initializable {
                     "🔄 Formulario base validado correctamente. Datos transferidos a la pantalla de foto de perfil.");
 
         } catch (IOException e) {
-            mostrarAlerta("Error al cambiar a la pantalla de foto de perfil.");
+            mostrarAlerta(rb.getString("auth.register.error_profile_image"));
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
             // 🔄 Mantenemos tu control de correos duplicados intacto
             if ("EMAIL_ALREADY_EXISTS".equals(e.getMessage())) {
-                mostrarAlerta("Este correo electrónico ya se encuentra registrado.");
+                mostrarAlerta(rb.getString("auth.register.email_already_exists"));
             } else {
-                mostrarAlerta("Por favor, completa todos los campos obligatorios de forma correcta.");
+                mostrarAlerta(rb.getString("auth.register.fill_all_fields"));
             }
         } catch (RuntimeException e) {
-            mostrarAlerta("Error crítico en el sistema.");
+            mostrarAlerta(rb.getString("auth.register.system_error"));
             e.printStackTrace();
         }
     }

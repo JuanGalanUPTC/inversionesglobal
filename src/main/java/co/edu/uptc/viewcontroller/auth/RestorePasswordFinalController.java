@@ -1,13 +1,17 @@
 package co.edu.uptc.viewcontroller.auth;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.Locale;
 
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
 import co.edu.uptc.security.PasswordEncoder;
 import co.edu.uptc.service.UserService;
 import javafx.animation.PauseTransition;
+import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -17,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class RestorePasswordFinalController {
+public class RestorePasswordFinalController implements Initializable {
 
     UserService userService = new UserService();
 
@@ -33,6 +37,17 @@ public class RestorePasswordFinalController {
     // 🔒 Confirmación de Contraseña
     @FXML private PasswordField passwordField1;
     @FXML private TextField txtConfirmPasswordMascarado;
+
+    private ResourceBundle rb;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
+        // Configurar ComboBox de idiomas si es necesario, similar a Login/Register
+        // idiomaComboBox.getItems().addAll("es", "en");
+        // idiomaComboBox.getSelectionModel().select(App.getLocale().getLanguage());
+        // idiomaComboBox.setOnAction(e -> App.changeLanguage(idiomaComboBox.getValue()));
+    }
 
     @FXML
     public void backToLogin() throws IOException {
@@ -55,22 +70,21 @@ public class RestorePasswordFinalController {
 
         // 2. Verificar que no haya campos vacíos
         if (nuevaPassword.isEmpty() || confirmacionPassword.isEmpty()) {
-            mostrarAlerta("Por favor, completa ambos campos de contraseña.");
+            mostrarAlerta(rb.getString("auth.restore_password.empty_fields"));
             return;
         }
 
         // 3. Verificar que coincidan exactamente en texto plano
         if (!nuevaPassword.equals(confirmacionPassword)) {
-            mostrarAlerta("Las contraseñas ingresadas no coinciden.");
+            mostrarAlerta(rb.getString("auth.restore_password.passwords_not_match"));
             return;
         }
 
         // 4. 🛡️ Validaciones de Complejidad y Seguridad (Regex)
         // Exige: Mínimo 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial
         String regexSegura = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]{8,}$";
-        
         if (!nuevaPassword.matches(regexSegura)) {
-            mostrarAlerta("La contraseña debe tener mínimo 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial (@$!%*?&.).");
+            mostrarAlerta(rb.getString("auth.restore_password.password_complexity"));
             return;
         }
 
@@ -91,13 +105,13 @@ public class RestorePasswordFinalController {
                     App.emailARestablecer = null; // Limpiar puente de datos
                     App.setRoot("auth/restore_passwordSuccess");
                 } else {
-                    mostrarAlerta("No se pudo actualizar la contraseña. Inténtalo de nuevo.");
+                    mostrarAlerta(rb.getString("auth.restore_password.update_failed"));
                 }
             } else {
-                mostrarAlerta("Error: Sesión de restablecimiento perdida.");
+                mostrarAlerta(rb.getString("auth.restore_password.session_lost"));
             }
         } catch (RuntimeException e) {
-            mostrarAlerta("Error al conectar con la base de datos.");
+            mostrarAlerta(rb.getString("auth.restore_password.db_error"));
             e.printStackTrace();
         }
     }

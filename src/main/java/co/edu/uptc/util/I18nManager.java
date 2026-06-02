@@ -22,8 +22,7 @@ public class I18nManager {
 
     public void setLocale(Locale locale) {
         this.currentLocale = locale;
-        // La ruta debe coincidir con donde guardaste los properties. 
-        // "i18n.messages" busca en src/main/resources/i18n/ los archivos messages_XX.properties
+        // Nueva ruta centralizada para los archivos de propiedades
         this.resourceBundle = ResourceBundle.getBundle("co.edu.uptc.i18n.messages", locale);
     }
 

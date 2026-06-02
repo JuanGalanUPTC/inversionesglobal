@@ -48,10 +48,12 @@ public class ReportesController implements Initializable {
     private final InvestorService investorService = new InvestorService();
     private final InvestmentService investmentService = new InvestmentService(assetService, investorService);
     private final PortfolioService portfolioService = new PortfolioService(investmentService, assetService, investorService);
+    private ResourceBundle rb;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Inicializar DatePickers con fechas por defecto (ej. último mes)
+        this.rb = rb;
+        // Inicializar DatePickers
         dpFechaFinGlobal.setValue(LocalDate.now());
         dpFechaInicioGlobal.setValue(LocalDate.now().minusMonths(1));
         dpFechaFinInversionista.setValue(LocalDate.now());
@@ -71,21 +73,21 @@ public class ReportesController implements Initializable {
         LocalDate fechaFin = dpFechaFinGlobal.getValue();
 
         if (fechaInicio == null || fechaFin == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Fechas Requeridas", "Por favor, selecciona una fecha de inicio y una fecha de fin para el reporte global.");
+            mostrarAlerta(Alert.AlertType.WARNING, rb.getString("reports.alert.dates_required.title"), rb.getString("reports.alert.dates_required.msg"));
             return;
         }
         if (fechaInicio.isAfter(fechaFin)) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Fechas Inválidas", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+            mostrarAlerta(Alert.AlertType.WARNING, rb.getString("reports.alert.invalid_dates.title"), rb.getString("reports.alert.invalid_dates.msg"));
             return;
         }
 
         try {
             List<Investment> allInvestments = investmentService.listInvestments();
             double gananciasGlobales = portfolioService.calculateEarningsByPeriod(allInvestments, fechaInicio, fechaFin);
-            lblGananciaGlobal.setText(String.format("Total: $%,.2f", gananciasGlobales));
+            lblGananciaGlobal.setText(rb.getString("common.total") + String.format(" $%,.2f", gananciasGlobales));
             exportarReporteGlobalPDF(gananciasGlobales, fechaInicio, fechaFin);
         } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error al Generar Reporte", "Ocurrió un error al calcular las ganancias globales: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.alert.error.title"), rb.getString("reports.alert.error.msg") + ": " + e.getMessage());
         }
     }
 
@@ -104,10 +106,10 @@ public class ReportesController implements Initializable {
                 writer.write("Fecha de Inicio: " + inicio + "\n");
                 writer.write("Fecha de Fin: " + fin + "\n");
                 writer.write("Ganancia Total en el Periodo: $" + String.format("%,.2f", ganancias) + "\n");
-                writer.write("------------------------------------\n");
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Reporte global exportado a:\n" + file.getAbsolutePath());
+                writer.write("------------------------------------\n"); // No necesita traducción, es un separador
+                mostrarAlerta(Alert.AlertType.INFORMATION, rb.getString("reports.alert.export.success.title"), rb.getString("reports.alert.export.success.msg") + ":\n" + file.getAbsolutePath());
             } catch (IOException e) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Error de Exportación", "No se pudo guardar el archivo: " + e.getMessage());
+                mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.alert.error.title"), e.getMessage());
             }
         }
     }
@@ -119,31 +121,31 @@ public class ReportesController implements Initializable {
         LocalDate fechaFin = dpFechaFinInversionista.getValue();
 
         if (investorId == null || investorId.isBlank()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "ID Requerido", "Por favor, ingresa el ID del inversionista.");
+            mostrarAlerta(Alert.AlertType.WARNING, rb.getString("reports.investor.id"), rb.getString("reports.alert.id_required.msg"));
             return;
         }
         if (fechaInicio == null || fechaFin == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Fechas Requeridas", "Por favor, selecciona una fecha de inicio y una fecha de fin.");
+            mostrarAlerta(Alert.AlertType.WARNING, rb.getString("reports.alert.dates_required.title"), rb.getString("reports.alert.dates_required.msg"));
             return;
         }
         if (fechaInicio.isAfter(fechaFin)) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Fechas Inválidas", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+            mostrarAlerta(Alert.AlertType.WARNING, rb.getString("reports.alert.invalid_dates.title"), rb.getString("reports.alert.invalid_dates.msg"));
             return;
         }
 
         try {
             Investor investor = investorService.findById(investorId);
             if (investor == null) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Inversionista No Encontrado", "No se encontró un inversionista con el ID proporcionado.");
+                mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.alert.investor.notfound.title"), rb.getString("reports.alert.investor.notfound.msg"));
                 return;
             }
             
             List<Investment> investorInvestments = investmentService.getInvestmentsByInvestorId(investorId);
             double gananciasInversionista = portfolioService.calculateEarningsByPeriod(investorInvestments, fechaInicio, fechaFin);
-            lblGananciaInversionista.setText(String.format("Total: $%,.2f", gananciasInversionista));
+            lblGananciaInversionista.setText(rb.getString("common.total") + String.format(" $%,.2f", gananciasInversionista));
             exportarReporteInversionistaPDF(investor, gananciasInversionista, fechaInicio, fechaFin);
         } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error al Generar Reporte", "Ocurrió un error al calcular las ganancias del inversionista: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.alert.error.title"), e.getMessage());
         }
     }
 
@@ -164,10 +166,10 @@ public class ReportesController implements Initializable {
                 writer.write("Fecha de Inicio: " + inicio + "\n");
                 writer.write("Fecha de Fin: " + fin + "\n");
                 writer.write("Ganancia Total en el Periodo: $" + String.format("%,.2f", ganancias) + "\n");
-                writer.write("---------------------------------------------\n");
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Reporte de inversionista exportado a:\n" + file.getAbsolutePath());
+                writer.write("---------------------------------------------\n"); // No necesita traducción
+                mostrarAlerta(Alert.AlertType.INFORMATION, rb.getString("reports.alert.export.success.title"), rb.getString("reports.alert.export.success.msg") + ":\n" + file.getAbsolutePath());
             } catch (IOException e) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Error de Exportación", "No se pudo guardar el archivo: " + e.getMessage());
+                mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.alert.error.title"), rb.getString("reports.alert.export.error.msg") + ": " + e.getMessage());
             }
         }
     }
@@ -184,8 +186,8 @@ public class ReportesController implements Initializable {
                 topData.add(new InvestorReportData(name, yield));
             }
             tablaTopInversionistas.setItems(topData);
-        } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error al Cargar Top 5", "Ocurrió un error al cargar el Top 5 de inversionistas: " + e.getMessage());
+        } catch (Exception e) { // Considerar un catch más específico si es posible
+            mostrarAlerta(Alert.AlertType.ERROR, rb.getString("reports.top5.error.title"), rb.getString("reports.top5.error.msg") + ": " + e.getMessage());
         }
     }
 
