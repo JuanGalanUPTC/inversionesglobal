@@ -41,7 +41,7 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-                <Button fx:id="btnGuardarCambios1" mnemonicParsing="false" onAction="#handleGuardarCambios" styleClass="btn-primary-dark" text="Guardar">
+                <Button fx:id="btnGuardarFoto" mnemonicParsing="false" onAction="#handleGuardarFoto" styleClass="btn-primary-dark" text="Guardar Foto">
                     <VBox.margin>
                         <Insets top="20.0" />
                     </VBox.margin>
@@ -60,7 +60,7 @@
                             <Button fx:id="btnEditarUsername" mnemonicParsing="false" onAction="#handleEditarUsername" styleClass="btn-primary-dark" text="Editar" />
                         </children>
                     </HBox>
-                    <Button fx:id="btnGuardarCambios" mnemonicParsing="false" onAction="#handleGuardarCambios" styleClass="btn-primary-dark" text="Guardar">
+                    <Button fx:id="btnGuardarUsername" mnemonicParsing="false" onAction="#handleGuardarUsername" styleClass="btn-primary-dark" text="Guardar Nombre">
                         <VBox.margin>
                             <Insets top="20.0" />
                         </VBox.margin>
@@ -96,6 +96,12 @@
                             <Insets left="20.0" />
                         </VBox.margin>
                     </VBox>
+                    
+                    <Button fx:id="btnGuardarRiesgo" mnemonicParsing="false" onAction="#handleGuardarRiesgo" styleClass="btn-primary-dark" text="Guardar Perfil de Riesgo">
+                        <VBox.margin>
+                            <Insets top="25.0" />
+                        </VBox.margin>
+                    </Button>
                 </children>
             </VBox>
         </VBox>

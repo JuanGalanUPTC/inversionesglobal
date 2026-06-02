@@ -16,5 +16,13 @@
         "time": "16:44:33.119063900"
       }
     ]
+  },
+  {
+    "id": "ea22b532-b8e3-4198-bd13-355694cc926d",
+    "name": "ashe",
+    "email": "axel@gmail.com",
+    "availableCapital": 0.0,
+    "riskProfile": "CONSERVATIVE",
+    "investments": []
   }
 ]

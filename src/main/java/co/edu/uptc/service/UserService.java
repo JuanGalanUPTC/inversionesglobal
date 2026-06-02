@@ -8,6 +8,7 @@ import co.edu.uptc.security.PasswordEncoder;
 
 import com.google.gson.reflect.TypeToken;
 
+import co.edu.uptc.model.Investor;
 import co.edu.uptc.model.User;
 import co.edu.uptc.model.enums.UserRole;
 import co.edu.uptc.persistence.JsonRepository;

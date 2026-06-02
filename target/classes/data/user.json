@@ -32,14 +32,6 @@
     "userRole": "ADMIN"
   },
   {
-    "email": "axel@gmail.com",
-    "password": "$2a$10$gpBD76lrUPymfQSiXdg/tuWyPi/OkEhIQmdXC8b4vTE7LohKsfVeq",
-    "ciudadNacimiento": "sogamoso",
-    "userRole": "INVESTOR",
-    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
-    
-  },
-  {
     "email": "juandavid@gmail.com",
     "password": "$2a$10$zRmNOH/WN3SlBTX71C3O7.IBLd8PP.DZTIvMXU2cflrPePsx/1pZG",
     "ciudadNacimiento": "sogamoso",
@@ -115,5 +107,12 @@
     "password": "$2a$10$p1wTnS/mrzRjdCEDOfF3WuXqgqcXAA3Ry0pUTI3nlKriemqjrt..u",
     "ciudadNacimiento": "Tunja",
     "userRole": "ADMIN"
+  },
+  {
+    "email": "axel@gmail.com",
+    "password": "$2a$10$gpBD76lrUPymfQSiXdg/tuWyPi/OkEhIQmdXC8b4vTE7LohKsfVeq",
+    "ciudadNacimiento": "sogamoso",
+    "userRole": "INVESTOR",
+    "profileImagePath": "C:\\Users\\haxel\\Pictures\\Wallpapeipers\\Doc1-page-00001.jpg"
   }
 ]

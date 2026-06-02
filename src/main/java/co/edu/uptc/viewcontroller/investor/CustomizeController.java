@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
@@ -15,18 +16,36 @@ import java.io.File;
 import java.io.IOException;
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
+import co.edu.uptc.model.Investor;
+import co.edu.uptc.model.enums.RiskProfile;
+import co.edu.uptc.service.InvestorService;
+import co.edu.uptc.service.UserService;
 
 public class CustomizeController {
 
-    @FXML private ImageView imgPerfilPersonalizacion;
-    @FXML private TextField txtUsername;
-    @FXML private Button btnEditarUsername;
-    @FXML private Button btnGuardarCambios;
-
-    @FXML private ToggleGroup grupoPerfilRiesgo;
-    @FXML private RadioButton radioConservador;
-    @FXML private RadioButton radioModerado;
-    @FXML private RadioButton radioAgresivo;
+    UserService userService=new UserService();
+    @FXML
+    private Button btnGuardarUsername;
+    @FXML
+    private Button btnGuardarRiesgo;
+    @FXML
+    private ImageView imgPerfilPersonalizacion;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private Button btnEditarUsername;
+    @FXML
+    private Button btnGuardarFoto;
+    @FXML
+    private Button btnCargarFoto;
+    @FXML
+    private ToggleGroup grupoPerfilRiesgo;
+    @FXML
+    private RadioButton radioConservador;
+    @FXML
+    private RadioButton radioModerado;
+    @FXML
+    private RadioButton radioAgresivo;
 
     private boolean editandoUsername = false;
     private String rutaImagenTemporal = null;
@@ -35,21 +54,31 @@ public class CustomizeController {
     public void initialize() {
         User usuarioLogueado = App.getUsuarioLogueado();
         if (usuarioLogueado != null) {
-            // 1. Cargar el nombre de usuario actual
-            txtUsername.setText(usuarioLogueado.getEmail()); // Ajusta a .getUsername() si aplica
+
+            // 1. CARGAR NOMBRE REAL DEL INVERSIONISTA (Buscándolo por su email en el JSON)
+            InvestorService investorService = new InvestorService();
+            Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
+
+            if (inversionista != null && inversionista.getName() != null) {
+                txtUsername.setText(inversionista.getName());
+            } else {
+                txtUsername.setText(usuarioLogueado.getEmail()); // Fallback por si no tiene entidad física aún
+            }
 
             // 2. Cargar la foto de perfil actual con máscara circular
             cargarFotoPerfil(usuarioLogueado.getProfileImagePath());
 
-            // 3. Opcional: Si tu usuario ya guarda el perfil de riesgo, selecciónalo aquí
-            // Ejemplo:
-            // if ("CONSERVADOR".equals(usuarioLogueado.getPerfilRiesgo())) radioConservador.setSelected(true);
+            // 3. CARGAR EL PERFIL DE RIESGO ACTUAL EN LOS RADIO BUTTONS
+            if (inversionista != null && inversionista.getRiskProfile() != null) {
+                switch (inversionista.getRiskProfile()) {
+                    case CONSERVATIVE -> radioConservador.setSelected(true);
+                    case MODERATE -> radioModerado.setSelected(true);
+                    case AGGRESSIVE -> radioAgresivo.setSelected(true);
+                }
+            }
         }
     }
 
-    /**
-     * Procesa la carga y renderizado de la imagen circular
-     */
     private void cargarFotoPerfil(String path) {
         try {
             Image avatar;
@@ -60,11 +89,10 @@ public class CustomizeController {
             } else {
                 avatar = new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
             }
-            
+
             imgPerfilPersonalizacion.setImage(avatar);
-            
-            // Aplicar máscara circular idéntica al Dashboard
-            double ancho = 140; // Ajustado al tamaño de tu FXML
+
+            double ancho = 140;
             double alto = 140;
             imgPerfilPersonalizacion.setFitWidth(ancho);
             imgPerfilPersonalizacion.setFitHeight(alto);
@@ -77,24 +105,18 @@ public class CustomizeController {
         }
     }
 
-    /**
-     * Selecciona una nueva imagen desde el computador usando FileChooser
-     */
     @FXML
     private void handleCargarFoto() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar Foto de Perfil");
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
-        );
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
 
         Stage stage = (Stage) imgPerfilPersonalizacion.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
 
         if (file != null) {
-            // Guardamos la ruta absoluta elegida por el usuario
             rutaImagenTemporal = file.getAbsolutePath();
-            // La previsualizamos inmediatamente en la pantalla con el círculo
             cargarFotoPerfil(rutaImagenTemporal);
             System.out.println("📸 Imagen seleccionada temporalmente: " + rutaImagenTemporal);
         }
@@ -105,7 +127,7 @@ public class CustomizeController {
         if (!editandoUsername) {
             txtUsername.setEditable(true);
             txtUsername.requestFocus();
-            txtUsername.selectAll(); 
+            txtUsername.selectAll();
             btnEditarUsername.setText("Bloquear");
             editandoUsername = true;
         } else {
@@ -116,47 +138,107 @@ public class CustomizeController {
     }
 
     @FXML
-    private void handleGuardarCambios() {
-        String nuevoUsername = txtUsername.getText().trim();
-
-        if (nuevoUsername.isEmpty()) {
-            System.err.println("❌ El nombre de usuario no puede estar vacío.");
+    private void handleGuardarFoto() {
+        if (rutaImagenTemporal == null) {
+            mostrarAlerta("Información", "No has seleccionado ninguna imagen nueva para guardar.");
             return;
         }
 
-        RadioButton radioSeleccionado = (RadioButton) grupoPerfilRiesgo.getSelectedToggle();
-        String perfilRiesgoSeleccionado = (radioSeleccionado != null) ? radioSeleccionado.getText() : "NO SELECCIONADO";
-
         User usuarioLogueado = App.getUsuarioLogueado();
         if (usuarioLogueado != null) {
-            
-            // Guardar datos de texto
-            usuarioLogueado.setEmail(nuevoUsername); 
-            
-            // Guardar foto de perfil si se cambió una
-            if (rutaImagenTemporal != null) {
-                usuarioLogueado.setProfileImagePath(rutaImagenTemporal);
-            }
+            // 🎯 PASO CRÍTICO: Guardar la ruta temporal dentro del objeto del usuario en
+            // sesión
+            usuarioLogueado.setProfileImagePath(rutaImagenTemporal);
 
-            System.out.println("💾 Guardando datos en el usuario activo...");
-            
-            // 🚀 PERSISTENCIA ACTUAL: Aquí invocas tu persistencia JSON o de texto
-            // Ejemplo: ArchivoJsonUtil.guardarUsuarios(App.getListaUsuarios());
+            // Opcional: Aquí llamas al servicio que guarde la sesión del User en su archivo
+            // json
+            userService.updateUserInPersistence(usuarioLogueado);
 
-            // Dejar la interfaz limpia
-            txtUsername.setEditable(false);
-            btnEditarUsername.setText("Editar");
-            editandoUsername = false;
-            
-            // 🔄 TRUCO DE REFRESCO: Sincroniza la foto del menú lateral del Dashboard al instante
+            System.out.println("✅ Foto de perfil guardada con éxito: " + rutaImagenTemporal);
+            mostrarAlerta("Éxito", "Foto de perfil actualizada correctamente.");
+
+            // 🔄 Forzar refresco visual del panel lateral izquierdo del Dashboard
             if (DashboardController.getInstancia() != null) {
-                // Forzamos al Dashboard a recargar el initialize para actualizar el avatar lateral
                 DashboardController.getInstancia().initialize(null, null);
             }
-
-            System.out.println("✅ ¡Cambios guardados y reflejados en el Dashboard!");
-        } else {
-            System.err.println("❌ Error: No se encontró una sesión de usuario activa.");
         }
+    }
+
+    @FXML
+    private void handleGuardarUsername() {
+        String nuevoNombre = txtUsername.getText();
+        User usuarioLogueado = App.getUsuarioLogueado();
+
+        if (usuarioLogueado != null && !nuevoNombre.trim().isEmpty()) {
+            InvestorService investorService = new InvestorService();
+            Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
+
+            if (inversionista != null) {
+                // Actualizar el nombre en el modelo de persistencia financiero
+                inversionista.setName(nuevoNombre);
+                investorService.updateInvestor(inversionista);// Guarda los cambios en tu JSON
+
+                System.out.println("✅ Nombre del inversionista guardado: " + nuevoNombre);
+                mostrarAlerta("Éxito", "Nombre del inversionista actualizado correctamente.");
+
+                txtUsername.setEditable(false);
+                btnEditarUsername.setText("Editar");
+                editandoUsername = false;
+
+                // 🔄 Forzar refresco visual de la barra lateral (Cambiará el label del nombre)
+                if (DashboardController.getInstancia() != null) {
+                    DashboardController.getInstancia().initialize(null, null);
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void handleGuardarRiesgo() {
+        User usuarioLogueado = App.getUsuarioLogueado();
+        RadioButton seleccionado = (RadioButton) grupoPerfilRiesgo.getSelectedToggle();
+
+        if (usuarioLogueado != null && seleccionado != null) {
+            InvestorService investorService = new InvestorService();
+            Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
+
+            if (inversionista != null) {
+                // 1. Obtener el texto del RadioButton seleccionado en mayúsculas (ej:
+                // "MODERADO")
+                String riesgoTexto = seleccionado.getText().toUpperCase();
+
+                // 2. Mapeo seguro: Traducimos de Español (UI) a Inglés (Enum)
+                RiskProfile perfilReal;
+                if (riesgoTexto.contains("MODERA")) {
+                    perfilReal = RiskProfile.MODERATE;
+                } else if (riesgoTexto.contains("AGRES")) {
+                    perfilReal = RiskProfile.AGGRESSIVE;
+                } else {
+                    perfilReal = RiskProfile.CONSERVATIVE;
+                }
+
+                // 3. Asignar el perfil correcto ya traducido
+                inversionista.setRiskProfile(perfilReal);
+
+                // Persistencia de datos en la capa de servicios
+                investorService.updateInvestor(inversionista);
+
+                System.out.println("✅ Perfil de riesgo guardado en JSON: " + perfilReal.name());
+                mostrarAlerta("Éxito", "Perfil de riesgo actualizado correctamente.");
+
+                // 🔄 Forzar refresco visual del Dashboard para cambiar el label inferior
+                if (DashboardController.getInstancia() != null) {
+                    DashboardController.getInstancia().initialize(null, null);
+                }
+            }
+        }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

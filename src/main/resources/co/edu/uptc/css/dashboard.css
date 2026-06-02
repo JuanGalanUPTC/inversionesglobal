@@ -1,11 +1,13 @@
 /* --- CONTENEDOR PRINCIPAL (Fondo Oscuro Deep Cyber) --- */
 .dashboard-container {
-    -fx-background-color: #0B0F19; /* El color azul-negro del fondo de tu mapa */
+    -fx-background-color: #0B0F19;
+    /* El color azul-negro del fondo de tu mapa */
 }
 
 /* --- PANEL LATERAL (Sidebar - Gris Carbón del Login Box) --- */
 .sidebar {
-    -fx-background-color: #22252D; /* El gris oscuro exacto de tus ventanas de entrada */
+    -fx-background-color: #22252D;
+    /* El gris oscuro exacto de tus ventanas de entrada */
     -fx-padding: 30px 20px;
     -fx-spacing: 15px;
     /* Línea sutil para separar el menú usando un gris tech */
@@ -16,12 +18,14 @@
 /* --- BOTONES DEL MENÚ DE NAVEGACIÓN --- */
 .menu-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #94A3B8; /* Gris plateado para los botones no seleccionados */
+    -fx-text-fill: #94A3B8;
+    /* Gris plateado para los botones no seleccionados */
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 12px 20px;
-    -fx-background-radius: 20px; /* Estilo píldora/redondeado como tus botones de login */
+    -fx-background-radius: 20px;
+    /* Estilo píldora/redondeado como tus botones de login */
     -fx-border-radius: 20px;
     -fx-border-color: transparent;
     -fx-max-width: Infinity;
@@ -30,27 +34,34 @@
 
 /* Efecto al pasar el mouse por encima */
 .menu-button:hover {
-    -fx-background-color: #2D323F; /* Se aclara sutilmente el contenedor */
-    -fx-text-fill: #FFFFFF;        /* Texto blanco brillante */
+    -fx-background-color: #2D323F;
+    /* Se aclara sutilmente el contenedor */
+    -fx-text-fill: #FFFFFF;
+    /* Texto blanco brillante */
 }
 
 /* Estado seleccionado o activo (Mismo estilo que tu botón INICIAR SESIÓN) */
-.menu-button:focused, .menu-button:armed {
+.menu-button:focused,
+.menu-button:armed {
     -fx-background-color: #333742;
     -fx-text-fill: #FFFFFF;
-    -fx-border-color: #FFFFFF;     /* Contorno blanco limpio */
+    -fx-border-color: #FFFFFF;
+    /* Contorno blanco limpio */
     -fx-border-width: 1px;
 }
 
 /* --- BOTÓN DE CERRAR SESIÓN (Clon de tu botón "Salir" pero con alerta roja) --- */
 .btn-logout {
     -fx-background-color: transparent;
-    -fx-text-fill: #F87171;        /* Texto rojo suave tecnológico */
+    -fx-text-fill: #F87171;
+    /* Texto rojo suave tecnológico */
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-background-radius: 20px;   /* Píldora perfecta igual a tu botón "Salir" */
+    -fx-background-radius: 20px;
+    /* Píldora perfecta igual a tu botón "Salir" */
     -fx-border-radius: 20px;
-    -fx-border-color: #EF4444;     /* Contorno rojo */
+    -fx-border-color: #EF4444;
+    /* Contorno rojo */
     -fx-border-width: 1.5px;
     -fx-padding: 10px 20px;
     -fx-max-width: Infinity;
@@ -59,18 +70,22 @@
 }
 
 .btn-logout:hover {
-    -fx-background-color: #EF4444; /* Se rellena de rojo sólido al pasar el mouse */
-    -fx-text-fill: #FFFFFF;        /* Texto blanco */
+    -fx-background-color: #EF4444;
+    /* Se rellena de rojo sólido al pasar el mouse */
+    -fx-text-fill: #FFFFFF;
+    /* Texto blanco */
 }
 
 /* --- COMBOBOX DE IDIOMA (Igual al de la esquina inferior del Login) --- */
 .combo-idioma {
-    -fx-background-color: #11141A; /* Fondo más oscuro para destacar del sidebar */
+    -fx-background-color: #11141A;
+    /* Fondo más oscuro para destacar del sidebar */
     -fx-background-radius: 8px;
     -fx-border-color: #2D323F;
     -fx-border-radius: 8px;
     -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;        /* Texto de idioma en blanco */
+    -fx-text-fill: #FFFFFF;
+    /* Texto de idioma en blanco */
     -fx-padding: 5px 10px;
     -fx-max-width: Infinity;
     -fx-cursor: hand;
@@ -85,12 +100,41 @@
     -fx-background-color: #11141A;
     -fx-text-fill: #FFFFFF;
 }
+
 .combo-idioma .list-cell:hover {
     -fx-background-color: #2D323F;
 }
 
 /* --- CONTENEDOR CENTRAL DE CONTENIDO --- */
 .content-area {
-    -fx-background-color: #0F121D; /* Gris-azul extremadamente oscuro para mantener la atmósfera */
+    -fx-background-color: #0F121D;
+    /* Gris-azul extremadamente oscuro para mantener la atmósfera */
     -fx-padding: 20px;
+}
+
+/* 1. Estilo base para el nombre del Inversionista */
+.header-title {
+    -fx-font-family: "System";
+    /* O tu fuente del proyecto */
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    /* Evita que aparezcan puntos suspensivos (...) cortando el nombre bruscamente */
+    -fx-text-overrun: clip;
+}
+
+/* 2. Malla de seguridad para los textos de la barra lateral */
+.sidebar .label {
+    /* Permite que el label use todo el ancho disponible del VBox sin limitarse */
+    -fx-max-width: 160px;
+    /* Si por alguna razón el nombre sigue siendo gigante, esto permite que 
+       haga un salto de línea limpio en lugar de salirse del panel izquierdo */
+    -fx-wrap-text: true;
+}
+
+/* 3. Ajuste opcional para los subtítulos (Rol y Perfil de Riesgo) */
+.header-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    /* Un gris claro elegante para que resalte más el nombre */
+    -fx-font-weight: normal;
 }
