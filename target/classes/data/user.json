@@ -35,7 +35,9 @@
     "email": "axel@gmail.com",
     "password": "$2a$10$gpBD76lrUPymfQSiXdg/tuWyPi/OkEhIQmdXC8b4vTE7LohKsfVeq",
     "ciudadNacimiento": "sogamoso",
-    "userRole": "INVESTOR"
+    "userRole": "INVESTOR",
+    "profileImagePath": "/co/edu/uptc/images/userIconDefault.jpg"
+    
   },
   {
     "email": "juandavid@gmail.com",

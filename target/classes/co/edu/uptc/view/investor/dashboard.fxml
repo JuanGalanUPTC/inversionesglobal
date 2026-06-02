@@ -15,13 +15,13 @@
 <BorderPane fx:id="mainBorderPane" prefHeight="600.0" prefWidth="900.0" styleClass="dashboard-container" stylesheets="@../../css/dashboard.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.investor.DashboardController">
             
     <left>
-        <VBox fx:id="sidebar" prefWidth="255.0" spacing="10.0" styleClass="sidebar">
+        <VBox fx:id="sidebar" prefHeight="600.0" prefWidth="270.0" spacing="10.0" styleClass="sidebar">
             <padding>
                 <Insets bottom="20" left="10" right="10" top="20" />
             </padding>
          <HBox prefHeight="110.0" prefWidth="251.0" stylesheets="@../../css/misInversiones.css">
             <children>
-               <ImageView fx:id="avatarImageView" fitHeight="74.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
+               <ImageView fx:id="avatarImageView" fitHeight="79.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
                   <image>
                      <Image url="@../../images/userIconDefault.jpg" />
                   </image>
@@ -31,7 +31,7 @@
                </ImageView>
                <VBox prefHeight="84.0" prefWidth="119.0">
                   <children>
-                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize" onAction="#handleCustomizeButton">
+                     <Button mnemonicParsing="false" onAction="#handleCustomizeButton" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize">
                         <graphic>
                            <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
                               <image>
@@ -45,6 +45,7 @@
                      </Button>
                      <Label fx:id="nombreLabel" prefHeight="40.0" prefWidth="131.0" styleClass="header-title" text="Nombre" wrapText="true" />
                      <Label fx:id="rolLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Rol" />
+                     <Label fx:id="perfilRiesgoLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Perfil de Riesgo" />
                   </children>
                   <HBox.margin>
                      <Insets left="10.0" />
@@ -69,7 +70,7 @@
     </left>
     
     <center>
-        <StackPane fx:id="contentArea" styleClass="content-area">
+        <StackPane fx:id="contentArea" prefHeight="600.0" prefWidth="642.0" styleClass="content-area">
             <ImageView fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@/co/edu/uptc/images/logotipo.png" />
