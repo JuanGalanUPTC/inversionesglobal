@@ -21,8 +21,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -30,28 +32,29 @@ import co.edu.uptc.app.App;
 import co.edu.uptc.model.Investor;
 import co.edu.uptc.model.User;
 import co.edu.uptc.service.InvestorService;
+import co.edu.uptc.util.I18nManager;
 
 public class DashboardController implements Initializable {
+    // Guarda la instancia activa del Dashboard para acceso global
     private static DashboardController instanciaGlobal;
+    private String rutaVistaActual;
 
-    @FXML
-    private VBox warningBox;
-    @FXML
-    private ComboBox<String> idiomaComboBox;
-    @FXML
-    private Button btnCerrarSesion;
-    @FXML
-    private BorderPane mainBorderPane;
-    @FXML
-    private Label nombreLabel;
-    @FXML
-    private Label perfilRiesgoLabel;
-    @FXML
-    private Label rolLabel;
-    @FXML
-    private ImageView avatarImageView;
-    @FXML
-    private StackPane contentArea;
+    @FXML private VBox warningBox;
+    @FXML private ComboBox<String> idiomaComboBox;
+    @FXML private Button btnCerrarSesion;
+    @FXML private BorderPane mainBorderPane;
+    @FXML private StackPane contentArea;
+
+    // --- Componentes del Perfil de Inversionista ---
+    @FXML private Label nombreLabel;
+    @FXML private Label perfilRiesgoLabel;
+    @FXML private Label rolLabel;
+    @FXML private ImageView avatarImageView;
+
+    // --- Botones del Menú Lateral (Añadidos por Carlomagno) ---
+    @FXML private Button btnMisInversiones;
+    @FXML private Button btnReportes;
+    @FXML private Button btnActivos;
 
     @FXML
     private void mostrarMisInversiones() {
@@ -77,6 +80,14 @@ public class DashboardController implements Initializable {
         return instanciaGlobal;
     }
 
+    public void setVistaCentral(Node nodoVista) {
+        if (contentArea != null) {
+            contentArea.getChildren().setAll(nodoVista);
+        } else if (mainBorderPane != null) {
+            mainBorderPane.setCenter(nodoVista);
+        }
+    }
+
     @FXML
     public void handleCerrarSesion(ActionEvent event) {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
@@ -92,15 +103,11 @@ public class DashboardController implements Initializable {
 
         if (resultado.isPresent() && resultado.get() == botonSi) {
             try {
-                // 🎯 PASO 1: Limpiar el usuario de la sesión global
+                // 🎯 Solución al congelamiento: Limpiamos la sesión y la instancia estática
                 App.setUsuarioLogueado(null);
-
-                // 🎯 PASO 2: ROMPER EL SINGLETON (Limpiar la instancia vieja de la memoria)
-                // Esto le avisa a JavaFX que el panel viejo ya no existe y debe crear uno nuevo
-                // al re-entrar
                 instanciaGlobal = null;
 
-                // PASO 3: Redireccionar al Login de forma normal usando tu método setRoot
+                // Redireccionar al Login de forma limpia mediante App.setRoot
                 App.setRoot("auth/login");
 
             } catch (IOException e) {
@@ -112,9 +119,19 @@ public class DashboardController implements Initializable {
 
     private void cambiarCentro(String rutaFxml) {
         try {
+            // Guardamos la ruta para recordar qué pantalla está abierta y poder refrescarla al cambiar idioma
+            this.rutaVistaActual = rutaFxml;
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
+            
+            // Inyectamos dinámicamente el ResourceBundle del idioma activo antes de cargar
+            loader.setResources(I18nManager.getInstance().getBundle());
+            
             Parent nuevaVista = loader.load();
-            mainBorderPane.setCenter(nuevaVista);
+            
+            // Renderizado óptimo en la sección del ContentArea (Derecha)
+            setVistaCentral(nuevaVista);
+            
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error al cargar la sub-vista: " + rutaFxml);
@@ -131,15 +148,31 @@ public class DashboardController implements Initializable {
         }
         idiomaComboBox.setCellFactory(param -> createCustomCell());
         idiomaComboBox.setButtonCell(createCustomCell());
-        idiomaComboBox.getSelectionModel().selectFirst();
+        
+        // Seleccionamos el idioma inicial desde tu I18nManager
+        String idiomaActual = I18nManager.getInstance().getCurrentLocale().getLanguage();
+        idiomaComboBox.getSelectionModel().select(idiomaActual);
+
+        // Escuchar el cambio de idioma dinámicamente
+        idiomaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                aplicarCambioIdioma(newValue);
+            }
+        });
 
         if (warningBox != null) {
             warningBox.setVisible(false);
             warningBox.setManaged(false);
         }
 
-        // 2. OBTENER USUARIO Y CONFIGURAR LA BARRA LATERAL CON LOS DATOS DEL
-        // INVERSIONISTA
+        // 2. CARGA DE DATOS DE PERSISTENCIA (Tu lógica corregida a prueba de fallos)
+        cargarDatosInversionista();
+        
+        // Traducir menús fijos
+        recargarTextosGlobales();
+    }
+
+    private void cargarDatosInversionista() {
         User usuarioLogueado = App.getUsuarioLogueado();
 
         if (usuarioLogueado != null) {
@@ -151,21 +184,16 @@ public class DashboardController implements Initializable {
             InvestorService investorService = new InvestorService();
             Investor inversionista = investorService.findByEmail(emailLimpio);
 
-            // 🚀 CREACIÓN CONTROLADA Y AJUSTADA PARA EVITAR DUPLICACIONES AL VOLVER A
-            // INICIAR SESIÓN
+            // Creación controlada para evitar colapsos por duplicidad
             if (inversionista == null) {
-                System.out.println(
-                        "⚠️ El inversionista no existía en el JSON financiero. Registrando a través del servicio...");
+                System.out.println("⚠️ El inversionista no existía en el JSON financiero. Registrando...");
                 try {
-                    // Usamos el método de creación oficial de tu lógica de negocio
                     investorService.createInvestor(
                             "Ashe",
                             emailLimpio,
                             0.0,
                             co.edu.uptc.model.enums.RiskProfile.CONSERVATIVE);
 
-                    // Volvemos a solicitar el inversionista para que ahora sí cargue el objeto
-                    // persistido
                     inversionista = investorService.findByEmail(emailLimpio);
                 } catch (Exception e) {
                     System.out.println("ℹ️ Nota: El registro financiero ya existía físicamente. Recuperando datos...");
@@ -173,7 +201,7 @@ public class DashboardController implements Initializable {
                 }
             }
 
-            // 🎯 2. ASIGNAR EL NOMBRE REAL Y AJUSTAR EL TAMAÑO DINÁMICAMENTE
+            // Asignar el nombre real de forma dinámica
             if (inversionista != null && nombreLabel != null && inversionista.getName() != null) {
                 String nombreReal = inversionista.getName();
                 nombreLabel.setText(nombreReal);
@@ -187,7 +215,7 @@ public class DashboardController implements Initializable {
                 }
             }
 
-            // 🎯 3. Asignar el perfil de riesgo de forma segura
+            // Asignar perfil de riesgo de forma segura
             if (inversionista != null && perfilRiesgoLabel != null) {
                 if (inversionista.getRiskProfile() != null) {
                     perfilRiesgoLabel.setText(inversionista.getRiskProfile().name());
@@ -196,8 +224,7 @@ public class DashboardController implements Initializable {
                 }
             }
 
-            // 4. Renderizar la imagen del avatar de manera segura (Soporta resources
-            // internos y URIs externas)
+            // Renderizado seguro del Avatar Circular (Soporta absolute paths y file:/ URIs)
             if (usuarioLogueado.getProfileImagePath() != null && avatarImageView != null) {
                 try {
                     String rutaImagen = usuarioLogueado.getProfileImagePath();
@@ -210,16 +237,13 @@ public class DashboardController implements Initializable {
                         }
                         avatar = new Image(stream);
                     } else if (rutaImagen.startsWith("file:") || rutaImagen.startsWith("http")) {
-                        // 🎯 MEJORA CRÍTICA: Si ya viene formateado como URI desde la persistencia, se
-                        // carga directo
                         avatar = new Image(rutaImagen);
                     } else {
                         java.io.File file = new java.io.File(rutaImagen);
                         if (file.exists()) {
                             avatar = new Image(file.toURI().toString());
                         } else {
-                            avatar = new Image(
-                                    getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
+                            avatar = new Image(getClass().getResourceAsStream("/co/edu/uptc/images/userIconDefault.jpg"));
                         }
                     }
 
@@ -241,6 +265,28 @@ public class DashboardController implements Initializable {
                 }
             }
         }
+    }
+
+    private void aplicarCambioIdioma(String codigoIdioma) {
+        // 1. Cambiar el Locale global
+        I18nManager.getInstance().setLocale(Locale.of(codigoIdioma));
+
+        // 2. Traducir elementos estáticos del panel lateral
+        recargarTextosGlobales();
+
+        // 3. Refrescar la sub-pantalla del centro cargándole de nuevo su FXML con el nuevo bundle
+        if (rutaVistaActual != null) {
+            cambiarCentro(rutaVistaActual);
+        }
+    }
+
+    private void recargarTextosGlobales() {
+        ResourceBundle bundle = I18nManager.getInstance().getBundle();
+        
+        if (btnMisInversiones != null) btnMisInversiones.setText(bundle.getString("global.menu.investments"));
+        if (btnReportes != null) btnReportes.setText(bundle.getString("global.menu.reports"));
+        if (btnActivos != null) btnActivos.setText(bundle.getString("global.menu.assets"));
+        if (btnCerrarSesion != null) btnCerrarSesion.setText(bundle.getString("global.btn.logout"));
     }
 
     private ListCell<String> createCustomCell() {
@@ -273,7 +319,6 @@ public class DashboardController implements Initializable {
                             flagView.setImage(new Image(stream));
                             container.getChildren().addAll(flagView, lblName);
                         } else {
-                            System.out.println("⚠️ No se encontró la imagen en: " + imagePath);
                             container.getChildren().add(lblName);
                         }
                     } catch (Exception e) {
@@ -284,13 +329,5 @@ public class DashboardController implements Initializable {
                 }
             }
         };
-    }
-
-    public void setVistaCentral(Parent nodoVista) {
-        if (mainBorderPane != null) {
-            mainBorderPane.setCenter(nodoVista);
-        } else {
-            System.err.println("❌ Error: mainBorderPane no está inyectado correctamente desde el FXML.");
-        }
     }
 }

@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -22,12 +21,9 @@ import java.util.List;
 public class MisInversionesController {
 
     // --- COMPONENTES PRINCIPALES ---
-
-    @FXML private VBox listaInversionesVBox;
     @FXML private Label saldoLabel;
     @FXML private VBox containerEstadoVacio;
     @FXML private VBox containerListaInversiones;
-    @FXML private Button btnNuevaInversion;
 
     // --- COMPONENTES DEL MODAL FLOTANTE ---
     @FXML private StackPane modalOverlay;
@@ -84,12 +80,8 @@ public class MisInversionesController {
     /**
      * Construye dinámicamente las filas (cards) en JavaFX con el estilo de la captura 2
      */
-    /**
-     * Construye dinámicamente las filas (cards) en JavaFX con el estilo de la captura 2
-     */
     private void renderizarListaInversiones() {
-        // 🎯 CORRECCIÓN: Limpiar el VBox interno de la lista, NO el contenedor padre
-        listaInversionesVBox.getChildren().clear(); 
+        containerListaInversiones.getChildren().clear(); // Limpiar UI previa
 
         for (InversionSimulada inv : listaDeInversiones) {
             // Crear contenedor de la fila (HBox)
@@ -113,7 +105,7 @@ public class MisInversionesController {
             infoDerecha.setAlignment(Pos.CENTER_RIGHT);
             Label lblPerfLabel = new Label("Rendimiento");
             lblPerfLabel.getStyleClass().add("item-perf-label");
-            Label lblPerfValue = new Label("+17%"); 
+            Label lblPerfValue = new Label("+17%"); // Simulado estático para coincidir con tu diseño
             lblPerfValue.getStyleClass().add("item-perf-value-positive");
             infoDerecha.getChildren().addAll(lblPerfLabel, lblPerfValue);
 
@@ -127,8 +119,8 @@ public class MisInversionesController {
             // EVENTO CLICK: Ir a la pantalla de detalles de esta inversión
             fila.setOnMouseClicked(event -> irAPantallaDetalles(inv));
 
-            // 🎯 CORRECCIÓN: Agregar la fila al VBox interno destinado a la lista
-            listaInversionesVBox.getChildren().add(fila);
+            // Agregar la fila construida al contenedor principal de la vista
+            containerListaInversiones.getChildren().add(fila);
         }
     }
 
@@ -193,7 +185,12 @@ public class MisInversionesController {
     try {
         System.out.println("Navegando a detalles de: " + inversion.getNombre());
         
+        // 1. Creas el FXMLLoader como lo tienes actualmente
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/investor/detalleInversion.fxml"));
+        // 2. !!! AGREGAS ESTA LÍNEA !!!
+        // Le inyectas los diccionarios de traducción a este cargador específico
+        loader.setResources(co.edu.uptc.util.I18nManager.getInstance().getBundle());
+        // 3. Ahora sí, cargas la vista sin que explote
         Parent detalleView = loader.load();
         
         DetalleInversionController controller = loader.getController();

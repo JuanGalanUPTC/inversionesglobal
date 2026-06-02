@@ -23,15 +23,15 @@
                 </padding>
 
                 <VBox spacing="5.0" minHeight="-Infinity">
-                    <Label styleClass="header-title" text="¡Hola Inversionista!" wrapText="true" />
-                    <Label styleClass="header-subtitle" text="Bienvenido al Menú Principal. ¿En qué vamos a invertir hoy?" wrapText="true" />
+                    <Label styleClass="header-title" text="%misinversiones.hello" wrapText="true" />
+                    <Label styleClass="header-subtitle" text="%misinversiones.welcome" wrapText="true" />
                 </VBox>
 
                 <VBox spacing="5.0" styleClass="card-balance-box" minHeight="-Infinity">
                     <padding>
                         <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
                     </padding>
-                    <Label styleClass="card-label-small" text="TU SALDO DISPONIBLE" />
+                    <Label styleClass="card-label-small" text="%misinversiones.balance.label" />
                     <Label fx:id="saldoLabel" styleClass="card-balance" text="\$20,000" />
                 </VBox>
 
@@ -44,15 +44,15 @@
                             <Image url="@../images/lupa_icon.png" />
                         </ImageView>
                     </StackPane>
-                    <Label styleClass="empty-state-title" text="Realiza tu primera inversión" />
-                    <Label styleClass="empty-state-subtitle" text="No tienes ninguna inversión activa actualmente." />
-                    <Button mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-pill-primary" text="Nueva Inversión">
+                    <Label styleClass="empty-state-title" text="%misinversiones.empty.title" />
+                    <Label styleClass="empty-state-subtitle" text="%misinversiones.empty.subtitle" />
+                    <Button mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-pill-primary" text="%misinversiones.empty.btn">
                         <VBox.margin><Insets top="20.0" /></VBox.margin>
                     </Button>
                 </VBox>
 
                 <VBox fx:id="containerListaInversiones" spacing="15.0" visible="false" managed="false" VBox.vgrow="ALWAYS">
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-dashed-new" text="+ Realizar Nueva Inversión" />
+                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-dashed-new" text="%misinversiones.list.newbtn" />
                     
                     <VBox fx:id="listaInversionesVBox" spacing="12.0" />
                 </VBox>
@@ -64,21 +64,21 @@
         <VBox maxHeight="-Infinity" maxWidth="420.0" spacing="20.0" styleClass="modal-card">
             <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
             
-            <Label styleClass="modal-title" text="Realizar Nueva Inversión" />
+            <Label styleClass="modal-title" text="%misinversiones.modal.title" />
             
             <VBox spacing="6.0">
-                <Label styleClass="input-label" text="Seleccionar Activo" />
+                <Label styleClass="input-label" text="%misinversiones.modal.select" />
                 <ComboBox fx:id="comboActivos" maxWidth="Infinity" styleClass="modal-combo" />
             </VBox>
             
             <VBox spacing="6.0">
-                <Label styleClass="input-label" text="Cantidad de activos (Capital Disponible)" />
+                <Label styleClass="input-label" text="%misinversiones.modal.amount" />
                 <TextField fx:id="txtMonto" promptText="0.00" styleClass="modal-input" />
             </VBox>
             
             <HBox alignment="CENTER_RIGHT" spacing="12.0">
-                <Button mnemonicParsing="false" onAction="#cerrarModal" styleClass="btn-modal-secondary" text="Cancelar" />
-                <Button mnemonicParsing="false" onAction="#confirmarInversion" styleClass="btn-modal-primary" text="Confirmar Inversión" />
+                <Button mnemonicParsing="false" onAction="#cerrarModal" styleClass="btn-modal-secondary" text="%misinversiones.modal.cancel" />
+                <Button mnemonicParsing="false" onAction="#confirmarInversion" styleClass="btn-modal-primary" text="%misinversiones.modal.confirm" />
             </HBox>
         </VBox>
     </StackPane>

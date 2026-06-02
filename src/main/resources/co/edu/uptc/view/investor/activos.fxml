@@ -17,19 +17,19 @@
                 <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
             </padding>
 
-            <Label styleClass="title-text" text="Activos Disponibles" />
+            <Label styleClass="title-text" text="%activos.title" />
 
-            <TextField fx:id="txtBuscar" promptText="Buscar activo..." styleClass="search-bar">
+            <TextField fx:id="txtBuscar" promptText="%activos.search" styleClass="search-bar">
                 <padding>
                     <Insets bottom="12.0" left="15.0" right="15.0" top="12.0" />
                 </padding>
             </TextField>
 
             <HBox spacing="10.0">
-                <Button onAction="#filtrarTodos" styleClass="btn-filter-active" text="Todos" />
-                <Button onAction="#filtrarCrypto" styleClass="btn-filter" text="Crypto" />
-                <Button onAction="#filtrarAcciones" styleClass="btn-filter" text="Acciones" />
-                <Button onAction="#filtrarForex" styleClass="btn-filter" text="Forex" />
+                <Button onAction="#filtrarTodos" styleClass="btn-filter-active" text="%activos.filter.all" />
+                <Button onAction="#filtrarCrypto" styleClass="btn-filter" text="%activos.filter.crypto" />
+                <Button onAction="#filtrarAcciones" styleClass="btn-filter" text="%activos.filter.stocks" />
+                <Button onAction="#filtrarForex" styleClass="btn-filter" text="%activos.filter.forex" />
             </HBox>
 
             <VBox spacing="10.0">
@@ -41,11 +41,11 @@
                     <padding>
                         <Insets left="15.0" right="15.0" />
                     </padding>
-                    <Label prefWidth="200.0" styleClass="header-text" text="Nombre" />
+                    <Label prefWidth="200.0" styleClass="header-text" text="%activos.col.name" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label prefWidth="120.0" styleClass="header-text" text="Precio" />
+                    <Label prefWidth="120.0" styleClass="header-text" text="%activos.col.price" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" styleClass="header-text" text="Volatilidad" />
+                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" styleClass="header-text" text="%activos.col.volatility" />
                 </HBox>
 
                 <Separator styleClass="white-separator" />

@@ -19,51 +19,52 @@
             <padding>
                 <Insets bottom="20" left="10" right="10" top="20" />
             </padding>
-         <HBox prefHeight="110.0" prefWidth="251.0" stylesheets="@../../css/misInversiones.css">
-            <children>
-               <ImageView fx:id="avatarImageView" fitHeight="79.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
-                  <image>
-                     <Image url="@../../images/userIconDefault.jpg" />
-                  </image>
-                  <HBox.margin>
-                     <Insets top="20.0" />
-                  </HBox.margin>
-               </ImageView>
-               <VBox prefHeight="84.0" prefWidth="119.0">
-                  <children>
-                     <Button mnemonicParsing="false" onAction="#handleCustomizeButton" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize">
-                        <graphic>
-                           <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
-                              <image>
-                                 <Image url="@../../images/customizeIcon.png" />
-                              </image>
-                           </ImageView>
-                        </graphic>
-                        <VBox.margin>
-                           <Insets left="100.0" />
-                        </VBox.margin>
-                     </Button>
-                     <Label fx:id="nombreLabel" prefHeight="40.0" prefWidth="131.0" styleClass="header-title" text="Nombre" wrapText="true" />
-                     <Label fx:id="rolLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Rol" />
-                     <Label fx:id="perfilRiesgoLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Perfil de Riesgo" />
-                  </children>
-                  <HBox.margin>
-                     <Insets left="10.0" />
-                  </HBox.margin>
-               </VBox>
-            </children>
-         </HBox>
             
-            <Button maxWidth="Infinity" onAction="#mostrarMisInversiones" styleClass="menu-button" text="Mis Inversiones" />
-            <Button maxWidth="Infinity" onAction="#mostrarReportes" styleClass="menu-button" text="Reportes" />
-            <Button maxWidth="Infinity" onAction="#mostrarActivos" styleClass="menu-button" text="Activos" />
+            <HBox prefHeight="110.0" prefWidth="251.0" stylesheets="@../../css/misInversiones.css">
+                <children>
+                    <ImageView fx:id="avatarImageView" fitHeight="79.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
+                        <image>
+                            <Image url="@../../images/userIconDefault.jpg" />
+                        </image>
+                        <HBox.margin>
+                            <Insets top="20.0" />
+                        </HBox.margin>
+                    </ImageView>
+                    <VBox prefHeight="84.0" prefWidth="119.0">
+                        <children>
+                            <Button mnemonicParsing="false" onAction="#handleCustomizeButton" prefHeight="24.0" prefWidth="28.0" styleClass="btn-customize">
+                                <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" styleClass="profileImage">
+                                        <image>
+                                            <Image url="@../../images/customizeIcon.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                                <VBox.margin>
+                                    <Insets left="100.0" />
+                                </VBox.margin>
+                            </Button>
+                            <Label fx:id="nombreLabel" prefHeight="40.0" prefWidth="131.0" styleClass="header-title" text="Nombre" wrapText="true" />
+                            <Label fx:id="rolLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Rol" />
+                            <Label fx:id="perfilRiesgoLabel" prefHeight="26.0" prefWidth="181.0" styleClass="header-subtitle" text="Perfil de Riesgo" />
+                        </children>
+                        <HBox.margin>
+                            <Insets left="10.0" />
+                        </HBox.margin>
+                    </VBox>
+                </children>
+            </HBox>
+            
+            <Button fx:id="btnMisInversiones" maxWidth="Infinity" onAction="#mostrarMisInversiones" styleClass="menu-button" text="%global.menu.investments" />
+            <Button fx:id="btnReportes" maxWidth="Infinity" onAction="#mostrarReportes" styleClass="menu-button" text="%global.menu.reports" />
+            <Button fx:id="btnActivos" maxWidth="Infinity" onAction="#mostrarActivos" styleClass="menu-button" text="%global.menu.assets" />
             
             <Region VBox.vgrow="ALWAYS" />
             
             <VBox alignment="BOTTOM_CENTER" spacing="15.0">
-                <Button fx:id="btnCerrarSesion" maxWidth="Infinity" onAction="#handleCerrarSesion" styleClass="btn-logout" text="Cerrar Sesión" />
+                <Button fx:id="btnCerrarSesion" maxWidth="Infinity" onAction="#handleCerrarSesion" styleClass="btn-logout" text="%global.btn.logout" />
                 
-                <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" maxWidth="Infinity" prefHeight="40.0" promptText="Cambiar idioma" styleClass="combo-idioma" visibleRowCount="2">
+                <ComboBox id="idiomaComboBox" fx:id="idiomaComboBox" maxWidth="Infinity" prefHeight="40.0" promptText="%global.combo.language" styleClass="combo-idioma" visibleRowCount="2">
                 </ComboBox>
             </VBox>
         </VBox>

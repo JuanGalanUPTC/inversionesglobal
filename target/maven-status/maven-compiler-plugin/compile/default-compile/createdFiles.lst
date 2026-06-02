@@ -38,6 +38,7 @@ co\edu\uptc\repository\Repository.class
 co\edu\uptc\service\AssetService.class
 co\edu\uptc\service\UserService.class
 co\edu\uptc\viewcontroller\investor\MisInversionesController.class
+co\edu\uptc\viewcontroller\investor\CustomizeController$1.class
 co\edu\uptc\service\InvestmentService.class
 co\edu\uptc\security\PasswordEncoder.class
 co\edu\uptc\viewcontroller\auth\RegisterController.class

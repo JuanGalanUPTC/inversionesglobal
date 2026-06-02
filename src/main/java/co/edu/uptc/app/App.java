@@ -32,6 +32,9 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/co/edu/uptc/view/" + fxml + ".fxml"));
+        // Le inyectamos el bundle de idioma por defecto antes de hacer el .load()
+        fxmlLoader.setResources(co.edu.uptc.util.I18nManager.getInstance().getBundle());
+
         return fxmlLoader.load();
     }
 
